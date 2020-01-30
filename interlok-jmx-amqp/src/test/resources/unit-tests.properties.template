@@ -1,0 +1,6 @@
+
+# Enable AMQP Tests @see docker-compose.yml at the top level...
+junit.amqp.enabled=false
+junit.amqp.broker=amqp://localhost:35672
+junit.amqp.topic.JmxServiceURL=service:jmx:amqp:///${junit.amqp.broker}?jmx.type=Topic&jmx.destination=junit_Topic
+junit.amqp.queue.JmxServiceURL=service:jmx:amqp:///${junit.amqp.broker}?jmx.type=Queue&jmx.destination=junit_Queue
