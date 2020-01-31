@@ -13,7 +13,7 @@ dependencies {
   compile ("org.apache.activemq:activemq-kahadb-store:$activemqVersion")
   compile ("org.apache.activemq:activemq-amqp:$activemqVersion")
   compile ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
-  compile ("javax.management.j2ee:javax.management.j2ee-api:1.1.1")
+  compile ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
