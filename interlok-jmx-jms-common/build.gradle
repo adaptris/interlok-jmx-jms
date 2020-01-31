@@ -46,6 +46,7 @@ publishing {
         properties.appendNode("target", "3.10.0+")
         properties.appendNode("tags", "jmx,jms")
         properties.appendNode("license", "false")
+        properties.appendNode("readme", "https://github.com/adaptris/interlok-jmx-jms/raw/develop/README.md")
       }
     }
   }
