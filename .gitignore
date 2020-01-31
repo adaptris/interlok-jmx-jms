@@ -38,3 +38,5 @@ bin
 out
 .gradle
 gradle.properties
+unit-tests.properties
+unit-tests.properties.resolved

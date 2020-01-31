@@ -1,0 +1,7 @@
+# Enable RABBIT Tests @see docker-compose.yml at the top level...
+junit.rabbitmq.enabled=false
+junit.rabbitmq.broker=amqp://admin:admin@localhost:5672/vhost
+junit.rabbitmq.topic.JmxServiceURL=service:jmx:rabbitmq:///amqp://admin:admin@localhost:5672?jmx.type=Topic&jmx.destination=Topic
+junit.rabbitmq.queue.JmxServiceURL=service:jmx:rabbitmq:///amqp://admin:admin@localhost:5672?jmx.type=Queue&jmx.destination=Queue
+
+
