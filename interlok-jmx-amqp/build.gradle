@@ -6,7 +6,7 @@ dependencies {
   compile project(':interlok-jmx-jms-common')
   compile ("org.apache.qpid:qpid-jms-client:0.48.0")
   compile ("org.apache.qpid:proton-jms:0.12.2")
-  compile ("org.apache.qpid:proton-j:0.33.0")
+  compile ("org.apache.qpid:proton-j:0.33.3")
 
   testCompile project(':interlok-jmx-jms-stubs')
   testCompile ('junit:junit:4.13')
