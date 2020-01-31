@@ -9,8 +9,8 @@ script: ./gradlew --no-daemon -PverboseTests=true test jacocoTestReport
 
 # code-cov is awful; since we haven't figured out
 # jacoco on a multi module project.
-# after_success:
-#   - bash <(curl -s https://codecov.io/bash)
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 jdk:
   - openjdk8
