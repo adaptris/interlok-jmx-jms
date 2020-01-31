@@ -6,11 +6,6 @@
 
 # Now create a file unit-tests.properties.template.MACHINENAME (e.g. unit-tests.properties.template.LHR12345)
 
-#junit.amqp.enabled=true
-#junit.amqp.broker=amqp://localhost:35672
-#junit.amqp.topic.JmxServiceURL=service:jmx:amqp:///${junit.amqp.broker}?jmx.type=Topic&jmx.destination=junit_Topic
-#junit.amqp.queue.JmxServiceURL=service:jmx:amqp:///${junit.amqp.broker}?jmx.type=Queue&jmx.destination=junit_Queue
-
 #junit.rabbitmq.enabled=true
 #junit.rabbitmq.broker=amqp://admin:admin@localhost:5672/vhost
 #junit.rabbitmq.topic.JmxServiceURL=service:jmx:rabbitmq:///${junit.rabbitmq.broker}?jmx.type=Topic&jmx.destination=junit_Topic
@@ -31,12 +26,3 @@ services:
       - '5672:5672'
       - '25672:25672'
       - '15672:15672'
-  activemq:
-    image: rmohr/activemq:5.15.9-alpine
-    hostname: activemq.local
-    ports:
-      - '61616:61616'
-      # Change the default AMQP 1.0 port to 35672
-      # to avoid clash with RMQ
-      - '35672:5672'
-      - '8161:8161'

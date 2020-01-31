@@ -3,6 +3,7 @@ package com.adaptris.jmx.remote.jms;
 import org.junit.After;
 import org.junit.Before;
 import com.adaptris.jmx.remote.BaseCase;
+import com.adaptris.jmx.remote.EmbeddedActiveMq;
 
 public abstract class ActiveMqBaseCase extends BaseCase {
   public static final String JMX_URL_PREFIX = "service:jmx:activemq:///";

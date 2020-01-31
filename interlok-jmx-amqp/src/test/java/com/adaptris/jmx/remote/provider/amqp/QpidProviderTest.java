@@ -11,32 +11,46 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXServiceURL;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assume;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import com.adaptris.jmx.remote.BaseCase;
+import com.adaptris.jmx.remote.EmbeddedActiveMq;
 import com.adaptris.jmx.remote.SimpleManagementBean;
 import com.adaptris.jmx.remote.SimpleManagementBeanMBean;
 
 @SuppressWarnings("deprecation")
 public class QpidProviderTest extends BaseCase {
 
-  private static final String KEY_TESTS_ENABLED = "amqp.enabled";
-  private static final String KEY_QUEUE_JMX_URL = "amqp.queue.JmxServiceURL";
-  private static final String KEY_TOPIC_JMX_URL = "amqp.topic.JmxServiceURL";
-  private static final String KEY_BROKER_URL = "amqp.broker";
+  public static final String JMX_URL_PREFIX = "service:jmx:amqp:///";
+  public static final String JMX_URL_SUFFIX_QUEUE = "?jmx.type=Queue&jmx.destination=Junit_Queue";
+  public static final String JMX_URL_SUFFIX_TOPIC = "?jmx.type=Topic&jmx.destination=Junit_Topic";
+
+  private EmbeddedActiveMq broker;
+  private String jmxUrlBase;
 
   public QpidProviderTest() {}
 
-  private static boolean testsEnabled() {
-    return Boolean.valueOf(PROPERTIES.getProperty(KEY_TESTS_ENABLED, "false")).booleanValue();
+
+  @Before
+  public void setUp() throws Exception {
+    broker = new EmbeddedActiveMq();
+    broker.start();
+    jmxUrlBase = JMX_URL_PREFIX + broker.getAmqpBrokerUrl();
+
   }
+
+  @After
+  public void tearDown() throws Exception {
+    broker.destroy();
+  }
+
 
   @Test
   public void testMBean_UseQueues() throws Exception {
-    Assume.assumeTrue(testsEnabled());
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(PROPERTIES.getProperty(KEY_QUEUE_JMX_URL));
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(jmxUrlBase + JMX_URL_SUFFIX_QUEUE);
     ObjectName objName = createObjectName("JmxJms:name=" + getName());
     try {
       SimpleManagementBean realBean = createAndRegisterBean(getName(), objName);
@@ -58,11 +72,9 @@ public class QpidProviderTest extends BaseCase {
 
   @Test
   public void testMBean_UseTopics() throws Exception {
-    Assume.assumeTrue(testsEnabled());
-
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(PROPERTIES.getProperty(KEY_TOPIC_JMX_URL));
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(jmxUrlBase + JMX_URL_SUFFIX_TOPIC);
     ObjectName objName = createObjectName("JmxJms:name=" + getName());
     try {
       SimpleManagementBean realBean = createAndRegisterBean(getName(), objName);
@@ -85,13 +97,11 @@ public class QpidProviderTest extends BaseCase {
 
   @Test
   public void testFactory_AdditionalQueryOnURL_Preserved() throws Exception {
-    Assume.assumeTrue(testsEnabled());
-
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(PROPERTIES.getProperty(KEY_TOPIC_JMX_URL) + "&jms.prefetchPolicy.all=100");
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(jmxUrlBase + JMX_URL_SUFFIX_TOPIC + "&jms.prefetchPolicy.all=100");
     try {
       QpidConnectionFactory fact = new QpidConnectionFactory(new HashMap<String, Object>(), jmxServiceUrl);
       String url = fact.getBrokerURL();
-      assertEquals(PROPERTIES.getProperty(KEY_BROKER_URL) + "?jms.prefetchPolicy.all=100", url);
+      assertEquals(broker.getAmqpBrokerUrl() + "?jms.prefetchPolicy.all=100", url);
     } finally {
     }
 
@@ -99,8 +109,7 @@ public class QpidProviderTest extends BaseCase {
 
   @Test
   public void testFactory_CreateConnection() throws Exception {
-    Assume.assumeTrue(testsEnabled());
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(PROPERTIES.getProperty(KEY_TOPIC_JMX_URL));
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(jmxUrlBase + JMX_URL_SUFFIX_TOPIC);
     QpidConnectionFactory fact = new QpidConnectionFactory(new HashMap<String, Object>(), jmxServiceUrl);
     try {
       assertNotNull(fact.createConnection());

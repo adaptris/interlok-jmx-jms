@@ -1,6 +1,5 @@
 ext {
   componentName='Interlok JMX/JMS AMQP provider via QPID'
-  activemqVersion = '5.15.9'
 }
 
 dependencies {

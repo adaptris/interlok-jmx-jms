@@ -5,11 +5,12 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TemporaryTopic;
-
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import com.adaptris.jmx.remote.EmbeddedActiveMq;
 
 public class JmsHelperTest {
   protected EmbeddedActiveMq broker;
@@ -17,17 +18,18 @@ public class JmsHelperTest {
   public JmsHelperTest() {
   }
 
-  @BeforeClass
+  @Before
   public void setUp() throws Exception {
     broker = new EmbeddedActiveMq();
     broker.start();
   }
 
-  @AfterClass
+  @After
   public void tearDown() throws Exception {
     broker.destroy();
   }
 
+  @Test
   public void testCloseConnection() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
@@ -35,6 +37,7 @@ public class JmsHelperTest {
     JmsHelper.closeQuietly((ActiveMQConnection) null);
   }
 
+  @Test
   public void testCloseConnection_StopFirst() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
@@ -43,6 +46,7 @@ public class JmsHelperTest {
 
   }
 
+  @Test
   public void testCloseSession() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
@@ -52,6 +56,7 @@ public class JmsHelperTest {
     JmsHelper.closeQuietly(connection);
   }
 
+  @Test
   public void testCloseMessageProducer() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
@@ -64,6 +69,7 @@ public class JmsHelperTest {
     JmsHelper.closeQuietly(connection);
   }
 
+  @Test
   public void testCloseMessageConsumer() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
@@ -76,6 +82,7 @@ public class JmsHelperTest {
     JmsHelper.closeQuietly(connection);
   }
 
+  @Test
   public void testDeleteQuietly() throws Exception {
     ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(broker.getBrokerUrl());
     ActiveMQConnection connection = (ActiveMQConnection) factory.createConnection();
