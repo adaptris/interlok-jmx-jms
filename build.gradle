@@ -18,7 +18,7 @@ ext {
   slf4jVersion = '1.7.30'
   log4j2Version = '2.13.0'
   springVersion = '4.3.20.RELEASE'
-  activemqVersion = '5.15.9'
+  activemqVersion = '5.15.11'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
