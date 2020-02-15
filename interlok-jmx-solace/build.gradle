@@ -5,7 +5,7 @@ ext {
 dependencies {
   compile project(':interlok-jmx-jms-common')
   compile ("com.solacesystems:sol-common:10.7.0")
-  compile ("com.solacesystems:sol-jcsmp:10.6.4")
+  compile ("com.solacesystems:sol-jcsmp:10.7.0")
   compile ("com.solacesystems:sol-jms:10.6.4")
 
   testCompile project(':interlok-jmx-jms-stubs')
