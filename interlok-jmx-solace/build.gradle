@@ -1,12 +1,13 @@
 ext {
   componentName='Interlok JMX/JMS Solace JMS provider'
+  solaceVersion='10.7.0'
 }
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
-  compile ("com.solacesystems:sol-common:10.7.0")
-  compile ("com.solacesystems:sol-jcsmp:10.6.4")
-  compile ("com.solacesystems:sol-jms:10.6.4")
+  compile ("com.solacesystems:sol-common:$solaceVersion")
+  compile ("com.solacesystems:sol-jcsmp:$solaceVersion")
+  compile ("com.solacesystems:sol-jms:$solaceVersion")
 
   testCompile project(':interlok-jmx-jms-stubs')
   testCompile ('junit:junit:4.13')
