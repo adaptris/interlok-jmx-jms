@@ -1,0 +1,267 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+import org.apache.tools.ant.filters.*
+
+plugins {
+  id 'com.github.spotbugs' version '3.0.0' apply false
+  id 'org.owasp.dependencycheck' version '5.3.0' apply false
+}
+
+ext {
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
+  nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
+  mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
+  repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
+  repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
+  defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
+  organizationName = "Adaptris Ltd"
+  slf4jVersion = '1.7.30'
+  log4j2Version = '2.13.0'
+  springVersion = '4.3.26.RELEASE'
+  activemqVersion = '5.15.11'
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+  allprojects {
+    tasks.withType(Javadoc) {
+      options.addStringOption('Xdoclint:none', '-quiet')
+    }
+  }
+}
+
+ext.hostname = { ->
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    return System.getenv("COMPUTERNAME")
+  }
+  return System.getenv("HOSTNAME")
+}
+
+ext.hasGraphViz = { ->
+  def app = "dot"
+  if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    app = app + ".exe"
+  }
+  return System.getenv("PATH").split(File.pathSeparator).any{
+    java.nio.file.Paths.get("${it}").resolve(app).toFile().exists()
+  }
+}
+
+ext.gitBranchNameOrTimestamp = { branchName ->
+  if (branchName.equals("HEAD") || branchName.equals("develop") || branchName.startsWith("release")) {
+    return new Date().format('HH:mm:ss z');
+  }
+  return branchName;
+}
+
+ext.buildInfo = { ->
+   new ByteArrayOutputStream().withStream { os ->
+      exec {
+        executable = "git"
+        args = ["rev-parse", "--abbrev-ref", "HEAD"]
+        standardOutput = os
+      }
+      def branchName = os.toString().replaceAll("\r", "").replaceAll("\n", "").trim();
+      return gitBranchNameOrTimestamp(branchName);
+    }
+}
+
+def propertyTemplate(dir, filename) {
+  def file = new File(dir, filename + "." + hostname())
+  if (file.exists()) {
+    return file.getName()
+  }
+  return filename
+}
+
+task clean(type: Delete) {
+  delete project.buildDir
+}
+
+subprojects { subproject ->
+  apply plugin: 'java'
+  apply plugin: 'maven'
+  apply plugin: 'maven-publish'
+  apply plugin: "jacoco"
+  apply plugin: 'com.github.spotbugs'
+  apply plugin: 'org.owasp.dependencycheck'
+
+  sourceCompatibility = 1.8
+  group   = 'com.adaptris'
+  version = releaseVersion
+  def versionDir = "$buildDir/version"
+
+  repositories {
+    mavenCentral()
+    maven { url "$defaultNexusRepo" }
+    maven { url "$nexusBaseUrl/content/groups/public" }
+    maven { url "$nexusBaseUrl/content/groups/interlok" }
+  }
+
+  configurations {
+    javadoc {}
+    umlDoclet {}
+    all*.exclude group: 'c3p0'
+    all*.exclude group: 'commons-logging'
+    all*.exclude group: 'javamail'
+    all*.exclude group: 'javax.mail', module: 'mail'
+    all*.exclude group: 'org.glassfish.hk2.external'
+    all*.exclude group: 'xalan', module: 'xalan'
+    all*.exclude group: 'net.sf.saxon', module: 'saxon'
+    all*.exclude group: 'org.codehaus.woodstox'
+    all*.exclude group: 'org.eclipse.jetty.orbit', module: 'javax.mail.glassfish'
+  }
+
+  configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+  }
+
+  // In this section you declare the dependencies for your production and test code
+  dependencies {
+    compile ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
+    compile ("commons-lang:commons-lang:2.6")
+    compile ("org.apache.commons:commons-lang3:3.9")
+    compile ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
+    compile ("org.springframework:spring-jms:$springVersion")
+    compile ("org.springframework:spring-beans:$springVersion") { transitive=false}
+    compile ("org.springframework:spring-core:$springVersion") { transitive=false}
+    compile ("org.springframework:spring-context:$springVersion") { transitive=false}
+    compile ("org.springframework:spring-aop:$springVersion") { transitive=false}
+    compile ("com.thoughtworks.xstream:xstream:1.4.11.1")
+    compile ("org.codehaus.jettison:jettison:1.2")
+    compile ("aopalliance:aopalliance:1.0")
+    compile ("org.slf4j:slf4j-api:$slf4jVersion")
+
+    umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
+    annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
+
+    testCompile ('junit:junit:4.13')
+    javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
+
+  }
+
+  javadoc {
+    onlyIf {
+      !hasGraphViz()
+    }
+    configure(options) {
+      taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
+      options.addStringOption "tagletpath", configurations.javadoc.asPath
+    }
+  }
+
+  task umlJavadoc(type: Javadoc) {
+    group 'Documentation'
+    description 'Build javadocs using plantuml + graphviz + umldoclet, if dot is available'
+
+    onlyIf {
+      hasGraphViz()
+    }
+    source = sourceSets.main.allJava
+    classpath = project.sourceSets.main.compileClasspath
+    configure(options) {
+      taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
+      options.addStringOption "tagletpath", configurations.javadoc.asPath
+      options.docletpath = configurations.umlDoclet.files.asType(List)
+      options.doclet = "nl.talsmasoftware.umldoclet.UMLDoclet"
+      options.addStringOption "umlBasePath", destinationDir.getCanonicalPath()
+      options.addStringOption "umlImageFormat", "SVG"
+      options.addStringOption "umlExcludedReferences", "java.lang.Exception,java.lang.Object,java.lang.Enum"
+      options.addStringOption "umlIncludePrivateClasses","false"
+      options.addStringOption "umlIncludePackagePrivateClasses","false"
+      options.addStringOption "umlIncludeProtectedClasses","false"
+      options.addStringOption "umlIncludeAbstractSuperclassMethods","false"
+      options.addStringOption "umlIncludeConstructors","false"
+      options.addStringOption "umlIncludePublicFields","false"
+      options.addStringOption "umlIncludePackagePrivateFields","false"
+      options.addStringOption "umlIncludeProtectedFields", "false"
+      options.addStringOption "umlIncludeDeprecatedClasses", "false"
+      options.addStringOption "umlIncludePrivateInnerClasses", "false"
+      options.addStringOption "umlIncludePackagePrivateInnerClasses", "false"
+      options.addStringOption "umlIncludeProtectedInnerClasses","false"
+    }
+  }
+
+  sourceSets {
+    main {
+      output.dir(versionDir, builtBy: 'generateVersion')
+    }
+  }
+
+  // Generate the META-INF/adaptris-version file
+  task generateVersion {
+    doLast {
+      def versionFile = new File(new File(versionDir, 'META-INF'), 'adaptris-version')
+      versionFile.getParentFile().mkdirs()
+      ant.propertyfile(file: versionFile) {
+        entry(key: 'component.name', value: componentName)
+        entry(key: 'build.version', value: releaseVersion)
+        entry(key: 'groupId', value: "com.adaptris")
+        entry(key: 'artifactId', value: project.name)
+        entry(key: 'build.date', value: new Date().format('yyyy-MM-dd'))
+        entry(key: 'build.info', value: buildInfo())
+      }
+    }
+  }
+
+  ext.testResourcesDir = { ->
+    return "${project.projectDir}/src/test/resources".replaceAll("\\\\", "/")
+  }
+
+  task generateUnitTestProperties {
+    doLast {
+      ant.property(file: project.projectDir.getCanonicalPath() + "/" + "build.properties")
+      ant.property(file:  testResourcesDir() + "/" + propertyTemplate(testResourcesDir(), "unit-tests.properties.template"))
+      ant.echoproperties(destfile:  testResourcesDir() + '/unit-tests.properties.resolved', prefix: "junit.")
+      ant.replace(file:  testResourcesDir() + '/unit-tests.properties.resolved', token:"junit.", value: "")
+    }
+  }
+
+  task copyUnitTestProperties(type: Copy, dependsOn: generateUnitTestProperties) {
+    delete file( testResourcesDir() + '/unit-tests.properties')
+    from file( testResourcesDir() + "/unit-tests.properties.resolved")
+    into (testResourcesDir())
+    rename { String fileName ->
+      fileName.replace("unit-tests.properties.resolved", 'unit-tests.properties')
+    }
+    filter(ReplaceTokens, tokens: [JAVA_HOME: System.getProperty("java.home").replaceAll("\\\\", "/")])
+    filter(ReplaceTokens, tokens: [BASE_DIR: project.projectDir.getCanonicalPath().replaceAll("\\\\", "/")])
+    filter(ReplaceTokens, tokens: [BUILD_DIR: project.buildDir.getCanonicalPath().replaceAll("\\\\", "/")])
+  }
+
+  task deleteGeneratedFiles(type: Delete) {
+    delete file(testResourcesDir() + "/unit-tests.properties"), file(testResourcesDir() + "/unit-tests.properties.resolved")
+  }
+
+  spotbugs {
+    // showProgress = "true"
+    effort = "max"
+    // Ignore failures?
+    // ignoreFailures = false
+
+    // We only care about "high priority" issues...
+    reportLevel = "high"
+  }
+
+  // disable spotbugsTests which checks our test code..
+  spotbugsTest.enabled = false
+
+  tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    reports {
+      xml.enabled = false
+      html.enabled = true
+    }
+    // includeFilter = new File("$rootDir/gradle/spotbugs-filter.xml")
+    // excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
+  }
+
+  jacocoTestReport {
+      reports {
+        xml.enabled true
+        html.enabled true
+      }
+  }
+
+  javadoc.dependsOn umlJavadoc
+  check.dependsOn jacocoTestReport
+  clean.dependsOn deleteGeneratedFiles
+}

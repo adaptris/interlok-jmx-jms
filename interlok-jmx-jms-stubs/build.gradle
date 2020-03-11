@@ -1,0 +1,72 @@
+ext {
+  componentName='Interlok JMX/JMS Test Stubs'
+}
+
+dependencies {
+  compile project(':interlok-jmx-jms-common')
+  compile ('junit:junit:4.13')
+  compile ("commons-io:commons-io:2.6")
+
+  compile ("org.apache.activemq:activemq-broker:$activemqVersion")
+  compile ("org.apache.activemq:activemq-jaas:$activemqVersion")
+  compile ("org.apache.activemq:activemq-kahadb-store:$activemqVersion")
+  compile ("org.apache.activemq:activemq-amqp:$activemqVersion")
+  compile ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
+  compile ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+jar {
+  manifest {
+    attributes("Built-By": System.getProperty('user.name'),
+              "Build-Jdk": System.getProperty('java.version'),
+              "Implementation-Title": componentName,
+              "Implementation-Version": project.version,
+              "Implementation-Vendor-Id": project.group,
+              "Implementation-Vendor": organizationName)
+  }
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+
+      artifact javadocJar { classifier "javadoc" }
+      artifact sourcesJar { classifier "sources" }
+
+      pom.withXml {
+        asNode().appendNode("name", componentName)
+        asNode().appendNode("description", "Test scaffolding for JMX/JMS Tests; of no use at Interlok runtime")
+        def properties = asNode().appendNode("properties")
+        properties.appendNode("url", "http://interlok.adaptris.net/interlok-docs/advanced-jmx-jms.html")
+        properties.appendNode("target", "3.10.0+")
+        properties.appendNode("tags", "jmx,jms")
+        properties.appendNode("license", "false")
+        properties.appendNode("developerOnly", "true")
+      }
+    }
+  }
+  repositories {
+    maven {
+      credentials {
+        username repoUsername
+        password repoPassword
+      }
+      url mavenPublishUrl
+    }
+  }
+}
