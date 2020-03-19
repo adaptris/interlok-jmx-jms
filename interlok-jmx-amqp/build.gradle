@@ -1,11 +1,11 @@
 ext {
   componentName="Interlok JMX/JMS AMQP provider via QPID"
-  nettyVersion="4.1.47.Final"
+  nettyVersion="4.1.48.Final"
 }
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
-  compile ("org.apache.qpid:qpid-jms-client:0.49.0"){
+  compile ("org.apache.qpid:qpid-jms-client:0.50.0"){
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
