@@ -22,7 +22,7 @@ dependencies {
   implementation ("io.netty:netty-codec-http:$nettyVersion")
 
   compile ("org.apache.qpid:proton-jms:0.12.2")
-  compile ("org.apache.qpid:proton-j:0.33.3")
+  compile ("org.apache.qpid:proton-j:0.33.4")
 
   testImplementation project(':interlok-jmx-jms-stubs')
   testImplementation ('junit:junit:4.13')
