@@ -2,8 +2,8 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'com.github.spotbugs' version '3.0.0' apply false
-  id 'org.owasp.dependencycheck' version '5.3.0' apply false
+  id 'com.github.spotbugs' version '4.0.5' apply false
+  id 'org.owasp.dependencycheck' version '5.3.2.1' apply false
 }
 
 ext {
@@ -16,9 +16,9 @@ ext {
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   organizationName = "Adaptris Ltd"
   slf4jVersion = '1.7.30'
-  log4j2Version = '2.13.0'
+  log4j2Version = '2.13.2'
   springVersion = '4.3.26.RELEASE'
-  activemqVersion = '5.15.11'
+  activemqVersion = '5.15.12'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -109,6 +109,11 @@ subprojects { subproject ->
     all*.exclude group: 'net.sf.saxon', module: 'saxon'
     all*.exclude group: 'org.codehaus.woodstox'
     all*.exclude group: 'org.eclipse.jetty.orbit', module: 'javax.mail.glassfish'
+    // INTERLOK-3197 exclude old javax.mail
+    all*.exclude group: 'com.sun.mail', module: 'javax.mail'
+    all*.exclude group: 'javax.validation', module: 'validation-api'
+    all*.exclude group: 'javax.activation', module: 'activation'
+    all*.exclude group: 'javax.activation', module: 'javax.activation-api'
   }
 
   configurations.all {
@@ -119,15 +124,14 @@ subprojects { subproject ->
   dependencies {
     compile ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     compile ("commons-lang:commons-lang:2.6")
-    compile ("org.apache.commons:commons-lang3:3.9")
+    compile ("org.apache.commons:commons-lang3:3.10")
     compile ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
     compile ("org.springframework:spring-jms:$springVersion")
     compile ("org.springframework:spring-beans:$springVersion") { transitive=false}
     compile ("org.springframework:spring-core:$springVersion") { transitive=false}
     compile ("org.springframework:spring-context:$springVersion") { transitive=false}
     compile ("org.springframework:spring-aop:$springVersion") { transitive=false}
-    compile ("com.thoughtworks.xstream:xstream:1.4.11.1")
-    compile ("org.codehaus.jettison:jettison:1.2")
+    compile ("com.thoughtworks.xstream:xstream:1.4.12")
     compile ("aopalliance:aopalliance:1.0")
     compile ("org.slf4j:slf4j-api:$slf4jVersion")
 
@@ -232,27 +236,28 @@ subprojects { subproject ->
     delete file(testResourcesDir() + "/unit-tests.properties"), file(testResourcesDir() + "/unit-tests.properties.resolved")
   }
 
-  spotbugs {
+  spotbugsMain {
+    effort = "max"
+    reportLevel = "high"
     // showProgress = "true"
     effort = "max"
     // Ignore failures?
     // ignoreFailures = false
-
-    // We only care about "high priority" issues...
-    reportLevel = "high"
+    reports {
+      xml {
+        enabled = false
+      }
+      html {
+        enabled = true
+      }
+    }
+    // includeFilter = new File("$rootDir/gradle/spotbugs-filter.xml")
+    // excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
   }
 
   // disable spotbugsTests which checks our test code..
   spotbugsTest.enabled = false
 
-  tasks.withType(com.github.spotbugs.SpotBugsTask) {
-    reports {
-      xml.enabled = false
-      html.enabled = true
-    }
-    // includeFilter = new File("$rootDir/gradle/spotbugs-filter.xml")
-    // excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
-  }
 
   jacocoTestReport {
       reports {

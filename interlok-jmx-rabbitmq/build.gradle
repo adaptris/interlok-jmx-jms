@@ -6,8 +6,8 @@ group = 'com.adaptris.labs'
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
-  compile ("com.rabbitmq.jms:rabbitmq-jms:1.14.0")
-  compile ("com.rabbitmq:amqp-client:5.8.0")
+  compile ("com.rabbitmq.jms:rabbitmq-jms:2.0.0")
+  compile ("com.rabbitmq:amqp-client:5.9.0")
 
   testCompile project(':interlok-jmx-jms-stubs')
   testCompile ('junit:junit:4.13')
