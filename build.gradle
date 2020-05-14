@@ -16,7 +16,7 @@ ext {
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   organizationName = "Adaptris Ltd"
   slf4jVersion = '1.7.30'
-  log4j2Version = '2.13.2'
+  log4j2Version = '2.13.3'
   springVersion = '4.3.27.RELEASE'
   activemqVersion = '5.15.12'
 }
