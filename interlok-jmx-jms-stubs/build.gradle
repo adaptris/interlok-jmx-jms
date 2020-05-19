@@ -1,11 +1,17 @@
 ext {
   componentName='Interlok JMX/JMS Test Stubs'
+  jacksonVersion="2.11.0"
 }
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
   compile ('junit:junit:4.13')
   compile ("commons-io:commons-io:2.6")
+
+  // since we depend on activemq-broker, we have to include jackson because
+  // it's transitive
+  compile ("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+  compile ("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
   compile ("org.apache.activemq:activemq-broker:$activemqVersion")
   compile ("org.apache.activemq:activemq-jaas:$activemqVersion")

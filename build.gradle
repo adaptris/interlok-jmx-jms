@@ -256,6 +256,16 @@ subprojects { subproject ->
 
   // disable spotbugsTests which checks our test code..
   spotbugsTest.enabled = false
+  dependencyCheck  {
+    suppressionFiles= [ "https://raw.githubusercontent.com/adaptris/interlok/develop/gradle/owasp-exclude.xml" , "$rootDir/gradle/owasp-exclude.xml"]
+    skipConfigurations = [ "antSql", "spotbugs", "umlDoclet", "offlineJavadocPackages", "javadoc" ]
+    formats = [ "HTML", "JUNIT" ]
+    junitFailOnCVSS = 7.0
+    failBuildOnCVSS = 7.0
+    analyzers {
+      assemblyEnabled=false
+    }
+  }
 
 
   jacocoTestReport {
