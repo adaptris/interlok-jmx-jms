@@ -1,6 +1,6 @@
 ext {
   componentName='Interlok JMX/JMS Solace JMS provider'
-  solaceVersion='10.8.1'
+  solaceVersion='10.9.0'
 }
 
 dependencies {
