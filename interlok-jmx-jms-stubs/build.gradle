@@ -1,6 +1,6 @@
 ext {
   componentName='Interlok JMX/JMS Test Stubs'
-  jacksonVersion="2.11.0"
+  jacksonVersion="2.11.1"
 }
 
 dependencies {
