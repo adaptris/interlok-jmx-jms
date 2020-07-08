@@ -2,7 +2,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'com.github.spotbugs' version '4.0.5' apply false
+  id 'com.github.spotbugs' version '4.2.3' apply false
   id 'org.owasp.dependencycheck' version '5.3.2.1' apply false
 }
 
@@ -16,8 +16,7 @@ ext {
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   organizationName = "Adaptris Ltd"
   slf4jVersion = '1.7.30'
-  log4j2Version = '2.13.2'
-  springVersion = '4.3.26.RELEASE'
+  springVersion = '4.3.27.RELEASE'
   activemqVersion = '5.15.12'
 }
 
@@ -257,6 +256,16 @@ subprojects { subproject ->
 
   // disable spotbugsTests which checks our test code..
   spotbugsTest.enabled = false
+  dependencyCheck  {
+    suppressionFiles= [ "https://raw.githubusercontent.com/adaptris/interlok/develop/gradle/owasp-exclude.xml" , "$rootDir/gradle/owasp-exclude.xml"]
+    skipConfigurations = [ "antSql", "spotbugs", "umlDoclet", "offlineJavadocPackages", "javadoc", "jacocoAnt", "jacocoAgent", "spotbugsPlugins", "spotbugsSlf4j" ]
+    formats = [ "HTML", "JUNIT" ]
+    junitFailOnCVSS = 7.0
+    failBuildOnCVSS = 7.0
+    analyzers {
+      assemblyEnabled=false
+    }
+  }
 
 
   jacocoTestReport {
