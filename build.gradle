@@ -123,7 +123,7 @@ subprojects { subproject ->
   dependencies {
     compile ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     compile ("commons-lang:commons-lang:2.6")
-    compile ("org.apache.commons:commons-lang3:3.10")
+    compile ("org.apache.commons:commons-lang3:3.11")
     compile ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
     compile ("org.springframework:spring-jms:$springVersion")
     compile ("org.springframework:spring-beans:$springVersion") { transitive=false}
