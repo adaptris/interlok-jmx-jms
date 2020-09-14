@@ -6,7 +6,7 @@ ext {
 dependencies {
   compile project(':interlok-jmx-jms-common')
   compile ('junit:junit:4.13')
-  compile ("commons-io:commons-io:2.7")
+  compile ("commons-io:commons-io:2.8.0")
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
