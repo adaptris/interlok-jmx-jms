@@ -2,13 +2,13 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'com.github.spotbugs' version '4.2.3' apply false
+  id 'com.github.spotbugs' version '4.5.0' apply false
   id 'org.owasp.dependencycheck' version '5.3.2.1' apply false
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.10-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.10-SNAPSHOT'
+  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '3.11-SNAPSHOT'
+  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '3.11-SNAPSHOT'
   nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
   repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
@@ -16,8 +16,8 @@ ext {
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   organizationName = "Adaptris Ltd"
   slf4jVersion = '1.7.30'
-  springVersion = '4.3.27.RELEASE'
-  activemqVersion = '5.15.12'
+  springVersion = '4.3.28.RELEASE'
+  activemqVersion = '5.16.0'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -123,7 +123,7 @@ subprojects { subproject ->
   dependencies {
     compile ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     compile ("commons-lang:commons-lang:2.6")
-    compile ("org.apache.commons:commons-lang3:3.10")
+    compile ("org.apache.commons:commons-lang3:3.11")
     compile ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
     compile ("org.springframework:spring-jms:$springVersion")
     compile ("org.springframework:spring-beans:$springVersion") { transitive=false}
