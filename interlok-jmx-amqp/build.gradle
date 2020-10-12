@@ -25,7 +25,7 @@ dependencies {
   compile ("org.apache.qpid:proton-j:0.33.6")
 
   testImplementation project(':interlok-jmx-jms-stubs')
-  testImplementation ('junit:junit:4.13')
+  testImplementation ('junit:junit:4.13.1')
 
   testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
   testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
