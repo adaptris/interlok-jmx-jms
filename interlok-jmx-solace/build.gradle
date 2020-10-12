@@ -10,7 +10,7 @@ dependencies {
   compile ("com.solacesystems:sol-jms:$solaceVersion")
 
   testCompile project(':interlok-jmx-jms-stubs')
-  testCompile ('junit:junit:4.13')
+  testCompile ('junit:junit:4.13.1')
 
   testCompile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
   testCompile ("org.slf4j:slf4j-simple:$slf4jVersion")

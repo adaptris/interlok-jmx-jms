@@ -137,7 +137,7 @@ subprojects { subproject ->
     umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testCompile ('junit:junit:4.13')
+    testCompile ('junit:junit:4.13.1')
     javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
 
   }
