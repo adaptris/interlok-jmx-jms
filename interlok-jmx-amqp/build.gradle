@@ -1,6 +1,6 @@
 ext {
   componentName="Interlok JMX/JMS AMQP provider via QPID"
-  nettyVersion="4.1.53.Final"
+  nettyVersion="4.1.54.Final"
 }
 
 dependencies {
@@ -22,7 +22,7 @@ dependencies {
   implementation ("io.netty:netty-codec-http:$nettyVersion")
 
   compile ("org.apache.qpid:proton-jms:0.12.2")
-  compile ("org.apache.qpid:proton-j:0.33.6")
+  compile ("org.apache.qpid:proton-j:0.33.7")
 
   testImplementation project(':interlok-jmx-jms-stubs')
   testImplementation ('junit:junit:4.13.1')

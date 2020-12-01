@@ -1,5 +1,6 @@
 ext {
   componentName='Interlok JMX/JMS ActiveMQ provider'
+  activemqVersion = '5.16.0'
 }
 
 dependencies {
