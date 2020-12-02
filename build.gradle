@@ -15,8 +15,8 @@ ext {
   repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
   defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
   organizationName = "Adaptris Ltd"
-  slf4jVersion = '1.7.30'
   springVersion = '4.3.29.RELEASE'
+  slf4jVersion = '1.7.30'
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -131,12 +131,17 @@ subprojects { subproject ->
     compile ("org.springframework:spring-aop:$springVersion") { transitive=false}
     compile ("com.thoughtworks.xstream:xstream:1.4.14")
     compile ("aopalliance:aopalliance:1.0")
-    compile ("org.slf4j:slf4j-api:$slf4jVersion")
+    compile ("org.slf4j:slf4j-api:1.7.30")
 
     umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
     testCompile ('junit:junit:4.13.1')
+    testCompile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
+    testCompile ("org.slf4j:slf4j-simple:$slf4jVersion")
+    testCompile ("org.slf4j:slf4j-log4j12:$slf4jVersion")
+
+
     javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
 
   }
