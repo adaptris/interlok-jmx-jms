@@ -1,6 +1,6 @@
 ext {
   componentName="Interlok JMX/JMS AMQP provider via QPID"
-  nettyVersion="4.1.55.Final"
+  nettyVersion="4.1.56.Final"
 }
 
 dependencies {
