@@ -58,12 +58,13 @@ publishing {
       pom.withXml {
         asNode().appendNode("name", componentName)
         asNode().appendNode("description", "Test scaffolding for JMX/JMS Tests; of no use at Interlok runtime")
+        asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
-        properties.appendNode("url", "http://interlok.adaptris.net/interlok-docs/advanced-jmx-jms.html")
         properties.appendNode("target", "3.10.0+")
         properties.appendNode("tags", "jmx,jms")
         properties.appendNode("license", "false")
         properties.appendNode("developerOnly", "true")
+        properties.appendNode("repository", "https://github.com/adaptris/interlok-jmx-jms")
       }
     }
   }
