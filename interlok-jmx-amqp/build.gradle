@@ -1,11 +1,11 @@
 ext {
   componentName="Interlok JMX/JMS AMQP provider via QPID"
-  nettyVersion="4.1.53.Final"
+  nettyVersion="4.1.56.Final"
 }
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
-  compile ("org.apache.qpid:qpid-jms-client:0.54.0"){
+  compile ("org.apache.qpid:qpid-jms-client:0.56.0"){
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
@@ -22,15 +22,9 @@ dependencies {
   implementation ("io.netty:netty-codec-http:$nettyVersion")
 
   compile ("org.apache.qpid:proton-jms:0.12.2")
-  compile ("org.apache.qpid:proton-j:0.33.6")
+  compile ("org.apache.qpid:proton-j:0.33.8")
 
   testImplementation project(':interlok-jmx-jms-stubs')
-  testImplementation ('junit:junit:4.13.1')
-
-  testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-  testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
-  testImplementation ("org.slf4j:slf4j-log4j12:$slf4jVersion")
-
   testImplementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 
 }
@@ -71,12 +65,13 @@ publishing {
       pom.withXml {
         asNode().appendNode("name", componentName)
         asNode().appendNode("description", "JMX/JMS AMQP Provider via Apache QPID")
+        asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
-        properties.appendNode("url", "http://interlok.adaptris.net/interlok-docs/advanced-jmx-jms.html")
         properties.appendNode("target", "3.10.0+")
         properties.appendNode("tags", "jmx,jms")
         properties.appendNode("license", "false")
         properties.appendNode("readme", "https://github.com/adaptris/interlok-jmx-jms/raw/develop/README.md")
+        properties.appendNode("repository", "https://github.com/adaptris/interlok-jmx-jms")
       }
     }
   }
