@@ -38,18 +38,18 @@ import org.springframework.util.ClassUtils;
  * {@link org.aopalliance.intercept.MethodInterceptor} for accessing a JMS-based remote service.
  *
  * <p>
- * Serializes remote invocation objects and deserializes remote invocation result objects. Uses Java serialization just like RMI,
- * but with the JMS provider as communication infrastructure.
+ * Serializes remote invocation objects and deserializes remote invocation result objects. Uses Java serialization just like RMI, but with
+ * the JMS provider as communication infrastructure.
  * </p>
  * <p>
- * This class is effectively a copy of {@link JmsInvokerProxyFactoryBean} and {@link JmsInvokerClientInterceptor} with the Queue
- * support abstracted as JMS1.1 destination. Concrete sub-classes will allow you to optionally a {@link javax.jms.Queue} or
+ * This class is effectively a copy of {@link JmsInvokerProxyFactoryBean} and {@link JmsInvokerClientInterceptor} with the Queue support
+ * abstracted as JMS1.1 destination. Concrete sub-classes will allow you to optionally use a {@link javax.jms.Queue} or
  * {@link javax.jms.Topic} as your JMS delivery mechanism.
  * </p>
  */
 // Yes it's a copy of JmsInvokerProxyFactoryBean + JmsInvokerClientInterceptor from Spring-JMS; but that uses QUEUES, not TOPICS...
 abstract class JmsInvokerProxy<S extends Destination> implements MethodInterceptor, InitializingBean, FactoryBean<Object>,
-    BeanClassLoaderAware {
+BeanClassLoaderAware {
 
 
   // need to have a fake category, as the classes are obfuscated.
@@ -131,7 +131,7 @@ abstract class JmsInvokerProxy<S extends Destination> implements MethodIntercept
       }
       else {
         throw new RemoteInvocationFailureException("Invocation of method [" + methodInvocation.getMethod()
-            + "] failed in JMS invoker remote service at queue [" + jmsDestination + "]", ex);
+        + "] failed in JMS invoker remote service at queue [" + jmsDestination + "]", ex);
       }
     }
   }

@@ -7,11 +7,7 @@ import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TemporaryTopic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class JmsHelper {
-  private static final Logger logger = LoggerFactory.getLogger(JmsHelper.class);
 
   /**
    * Delete a {@link TemporaryQueue} without logging any errors.
