@@ -1,5 +1,6 @@
 ext {
-  componentName="Interlok JMX/JMS AMQP provider via QPID"
+  componentName="Interlok JMX/AMQP"
+  componentDesc="Tunnelling JMX calls using AMQP via Apache QPID"
   nettyVersion="4.1.59.Final"
 }
 
@@ -64,7 +65,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "JMX/JMS AMQP Provider via Apache QPID")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

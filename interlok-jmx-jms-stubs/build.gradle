@@ -1,5 +1,6 @@
 ext {
-  componentName='Interlok JMX/JMS Test Stubs'
+  componentName='Interlok JMX/Stubs'
+  componentDesc="Test scaffolding for JMX Tests; of no use at Interlok runtime"
   jacksonVersion="2.12.1"
   activemqVersion = '5.16.1'
 }
@@ -57,7 +58,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "Test scaffolding for JMX/JMS Tests; of no use at Interlok runtime")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")
