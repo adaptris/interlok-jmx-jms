@@ -1,5 +1,6 @@
 ext {
-  componentName='Interlok JMX/JMS Solace JMS provider'
+  componentName='Interlok JMX/Solace'
+  componentDesc="Tunnelling JMX calls via Solace"
   solaceVersion='10.9.1'
 }
 
@@ -50,7 +51,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "JMX/JMS Provider for Solace JMS")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

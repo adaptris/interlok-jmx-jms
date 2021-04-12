@@ -1,5 +1,6 @@
 ext {
-  componentName='Interlok JMX/JMS Common'
+  componentName='Interlok JMX/Common'
+  componentDesc='Common classes required to tunnel JMX calls'
 }
 
 dependencies {
@@ -40,7 +41,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "JMX/JMS code shared across providers")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

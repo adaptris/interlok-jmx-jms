@@ -50,7 +50,7 @@ class JmsMBeanServerConnectionClient extends MBeanServerConnectionProxy implemen
 
   private List<ClientListenerEntry> purgeListeners() {
     log.debug("Discarding all notification listeners");
-    List<ClientListenerEntry> oldListeners = new ArrayList(listeners);
+    List<ClientListenerEntry> oldListeners = new ArrayList<>(listeners);
     listeners = new CopyOnWriteArrayList<ClientListenerEntry>();
     for (ClientListenerEntry entry : oldListeners) {
       try {
@@ -104,8 +104,8 @@ class JmsMBeanServerConnectionClient extends MBeanServerConnectionProxy implemen
     {
         name, listener
     });
-    for (Iterator i = listeners.iterator(); i.hasNext();) {
-      ClientListenerEntry li = (ClientListenerEntry) i.next();
+    for (Iterator<ClientListenerEntry> i = listeners.iterator(); i.hasNext();) {
+      ClientListenerEntry li = i.next();
       if (li.getListener() == listener) {
         listeners.remove(li);
         serverConnection.removeJmsNotificationListener(li.getId());
@@ -124,8 +124,8 @@ class JmsMBeanServerConnectionClient extends MBeanServerConnectionProxy implemen
     {
         name, listener, filter, handback
     });
-    for (Iterator i = listeners.iterator(); i.hasNext();) {
-      ClientListenerEntry li = (ClientListenerEntry) i.next();
+    for (Iterator<ClientListenerEntry> i = listeners.iterator(); i.hasNext();) {
+      ClientListenerEntry li = i.next();
       if (li.getObjectName() == name && li.getListener() == listener && li.getFilter() == filter && li.getHandback() == handback) {
         listeners.remove(li);
         serverConnection.removeJmsNotificationListener(li.getId());

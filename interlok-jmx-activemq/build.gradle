@@ -1,6 +1,7 @@
 ext {
-  componentName='Interlok JMX/JMS ActiveMQ provider'
-  activemqVersion = '5.16.0'
+  componentName='Interlok JMX/ActiveMQ'
+  componentDesc="Tunnelling JMX calls via ActiveMQ"
+  activemqVersion = '5.16.1'
 }
 
 dependencies {
@@ -45,7 +46,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "JMX/JMS provide for ActiveMQ")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

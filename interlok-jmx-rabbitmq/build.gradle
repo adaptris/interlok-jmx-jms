@@ -1,5 +1,6 @@
 ext {
-  componentName='Interlok JMX/JMS RabbitMQ provider'
+  componentName='Interlok JMX/RabbitMQ'
+  componentDesc="Tunnelling JMX calls via RabbitMQ"
 }
 
 group = 'com.adaptris.labs'
@@ -7,7 +8,7 @@ group = 'com.adaptris.labs'
 dependencies {
   compile project(':interlok-jmx-jms-common')
   compile ("com.rabbitmq.jms:rabbitmq-jms:2.2.0")
-  compile ("com.rabbitmq:amqp-client:5.10.0")
+  compile ("com.rabbitmq:amqp-client:5.11.0")
 
   testCompile project(':interlok-jmx-jms-stubs')
   testCompile ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
@@ -49,7 +50,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "JMX/JMS RabbitMQ Provider")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

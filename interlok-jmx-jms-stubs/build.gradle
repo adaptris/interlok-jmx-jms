@@ -1,12 +1,13 @@
 ext {
-  componentName='Interlok JMX/JMS Test Stubs'
-  jacksonVersion="2.12.1"
-  activemqVersion = '5.16.0'
+  componentName='Interlok JMX/Stubs'
+  componentDesc="Test scaffolding for JMX Tests; of no use at Interlok runtime"
+  jacksonVersion="2.12.2"
+  activemqVersion = '5.16.1'
 }
 
 dependencies {
   compile project(':interlok-jmx-jms-common')
-  compile ('junit:junit:4.13.1')
+  compile ('junit:junit:4.13.2')
   compile ("commons-io:commons-io:2.8.0")
 
   // since we depend on activemq-broker, we have to include jackson because
@@ -57,7 +58,7 @@ publishing {
 
       pom.withXml {
         asNode().appendNode("name", componentName)
-        asNode().appendNode("description", "Test scaffolding for JMX/JMS Tests; of no use at Interlok runtime")
+        asNode().appendNode("description", componentDesc)
         asNode().appendNode("url", "https://interlok.adaptris.net/interlok-docs/#/pages/advanced/advanced-jmx-jms")
         def properties = asNode().appendNode("properties")
         properties.appendNode("target", "3.10.0+")

@@ -15,7 +15,7 @@ import javax.management.ObjectName;
 class JmsMBeanServerConnectionListener extends MBeanServerConnectionProxy implements JmsMBeanServerConnection, ExceptionListener {
 
   private transient Session jmsSession;
-  private transient Map<String, ServerListenerEntry> notificationListeners = new ConcurrentHashMap();
+  private transient Map<String, ServerListenerEntry> notificationListeners = new ConcurrentHashMap<>();
   private transient JmsJmxConnectionFactory factory;
   private transient Object lock = new Object();
 
@@ -51,12 +51,12 @@ class JmsMBeanServerConnectionListener extends MBeanServerConnectionProxy implem
   @Override
   public void addJmsNotificationListener(String listenerId, ObjectName name, Destination replyToDestination) {
     doTraceLogging("addJmsNotificationListener", new String[]
-    {
-        "String", "ObjectName", "Destination"
-    }, new Object[]
-    {
-        listenerId, name, replyToDestination
-    });
+        {
+            "String", "ObjectName", "Destination"
+        }, new Object[]
+            {
+                listenerId, name, replyToDestination
+            });
     try {
       synchronized (lock) {
         ServerListenerEntry info = new ServerListenerEntry(listenerId, name, replyToDestination, jmsSession);
@@ -67,12 +67,12 @@ class JmsMBeanServerConnectionListener extends MBeanServerConnectionProxy implem
     catch (JMSException e) {
       waitQuietly(2);
       doTraceLogging("Retrying addJmsNotificationListener", new String[]
-      {
-          "String", "ObjectName", "Destination"
-      }, new Object[]
-      {
-          listenerId, name, replyToDestination
-      });
+          {
+              "String", "ObjectName", "Destination"
+          }, new Object[]
+              {
+                  listenerId, name, replyToDestination
+              });
       addJmsNotificationListener(listenerId, name, replyToDestination);
     }
     catch (Exception e) {
@@ -94,12 +94,12 @@ class JmsMBeanServerConnectionListener extends MBeanServerConnectionProxy implem
     ServerListenerEntry info = notificationListeners.remove(listenerId);
     if (info != null) {
       doTraceLogging("removeJmsNotificationListener", new String[]
-      {
-          "String"
-      }, new Object[]
-      {
-          listenerId
-      });
+          {
+              "String"
+          }, new Object[]
+              {
+                  listenerId
+              });
       info.close();
       removeNotificationListenerQuietly(info);
     }
