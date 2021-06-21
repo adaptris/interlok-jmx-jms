@@ -137,7 +137,7 @@ subprojects { subproject ->
     compile ("org.springframework:spring-aop:$springVersion") { transitive=false}
     compile ("com.thoughtworks.xstream:xstream:1.4.17")
     compile ("aopalliance:aopalliance:1.0")
-    compile ("org.slf4j:slf4j-api:1.7.30")
+    compile ("org.slf4j:slf4j-api:1.7.31")
 
     umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
