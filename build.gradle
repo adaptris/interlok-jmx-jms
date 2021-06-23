@@ -139,7 +139,7 @@ subprojects { subproject ->
     compile ("aopalliance:aopalliance:1.0")
     compile ("org.slf4j:slf4j-api:1.7.31")
 
-    umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
+    umlDoclet("nl.talsmasoftware:umldoclet:2.0.12")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
     testCompile ('junit:junit:4.13.2')
