@@ -5,14 +5,14 @@ ext {
 }
 
 dependencies {
-  compile project(':interlok-jmx-jms-common')
-  compile ("com.solacesystems:sol-common:$solaceVersion")
-  compile ("com.solacesystems:sol-jcsmp:$solaceVersion")
-  compile ("com.solacesystems:sol-jms:$solaceVersion")
+  api project(':interlok-jmx-jms-common')
+  implementation ("com.solacesystems:sol-common:$solaceVersion")
+  implementation ("com.solacesystems:sol-jcsmp:$solaceVersion")
+  implementation ("com.solacesystems:sol-jms:$solaceVersion")
 
-  testCompile project(':interlok-jmx-jms-stubs')
+  testImplementation project(':interlok-jmx-jms-stubs')
 
-  testCompile ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
+  testImplementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 
 }
 

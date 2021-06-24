@@ -7,25 +7,22 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.hasProperty('interlokCoreVersion') ? project.getProperty('interlokCoreVersion') : '4.2-SNAPSHOT'
-  releaseVersion = project.hasProperty('releaseVersion') ? project.getProperty('releaseVersion') : '4.2-SNAPSHOT'
-  nexusBaseUrl = project.hasProperty('nexusBaseUrl') ? project.getProperty('nexusBaseUrl') : 'https://nexus.adaptris.net/nexus'
-  mavenPublishUrl = project.hasProperty('mavenPublishUrl') ? project.getProperty('mavenPublishUrl') : nexusBaseUrl + '/content/repositories/snapshots'
-  repoUsername = project.hasProperty('repoUsername') ? project.getProperty('repoUsername') : 'unknown'
-  repoPassword = project.hasProperty('repoPassword') ? project.getProperty('repoPassword') : 'unknown'
-  defaultNexusRepo = project.hasProperty('defaultNexusRepo') ? project.getProperty('defaultNexusRepo') : 'https://repo1.maven.org/maven2/'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.2-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.2-SNAPSHOT'
+  nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
+  mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
+  javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
+  repoUsername = project.findProperty('repoUsername') ?: 'unknown'
+  repoPassword = project.findProperty('repoPassword') ?: 'unknown'
+  defaultNexusRepo = project.findProperty('defaultNexusRepo') ?: 'unknown'
+  interlokJavadocs= project.findProperty('interlokJavadocs') ?: javadocsBaseUrl + "/interlok-core/" + interlokCoreVersion
+  interlokCommonJavadocs= project.findProperty('interlokCommonJavadocs') ?: javadocsBaseUrl + "/interlok-common/" + interlokCoreVersion
+  offlineJavadocPackageDir = new File(project.buildDir, "offline-javadoc-packages")
+
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.8'
   slf4jVersion = '1.7.31'
   mockitoVersion = '3.11.2'
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-  allprojects {
-    tasks.withType(Javadoc) {
-      options.addStringOption('Xdoclint:none', '-quiet')
-    }
-  }
 }
 
 ext.hostname = { ->
@@ -78,8 +75,7 @@ task clean(type: Delete) {
 }
 
 subprojects { subproject ->
-  apply plugin: 'java'
-  apply plugin: 'maven'
+  apply plugin: 'java-library'
   apply plugin: 'maven-publish'
   apply plugin: "jacoco"
   apply plugin: 'com.github.spotbugs'
@@ -91,9 +87,20 @@ subprojects { subproject ->
   version = releaseVersion
   def versionDir = "$buildDir/version"
 
+  // Disable gradle module generation since we probably don't want
+  // xxx.module files in your repository.
+  tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+  }
+
   repositories {
     mavenCentral()
-    maven { url "$defaultNexusRepo" }
+    if (defaultNexusRepo != "unknown") {
+      maven {
+        url "$defaultNexusRepo"
+        allowInsecureProtocol true
+      }
+    }
     maven { url "$nexusBaseUrl/content/groups/public" }
     maven { url "$nexusBaseUrl/content/groups/interlok" }
   }
@@ -126,29 +133,30 @@ subprojects { subproject ->
 
   // In this section you declare the dependencies for your production and test code
   dependencies {
-    compile ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
-    compile ("commons-lang:commons-lang:2.6")
-    compile ("org.apache.commons:commons-lang3:3.12.0")
-    compile ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
-    compile ("org.springframework:spring-jms:$springVersion")
-    compile ("org.springframework:spring-beans:$springVersion") { transitive=false}
-    compile ("org.springframework:spring-core:$springVersion") { transitive=false}
-    compile ("org.springframework:spring-context:$springVersion") { transitive=false}
-    compile ("org.springframework:spring-aop:$springVersion") { transitive=false}
-    compile ("com.thoughtworks.xstream:xstream:1.4.17")
-    compile ("aopalliance:aopalliance:1.0")
-    compile ("org.slf4j:slf4j-api:1.7.31")
+    api ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
+    api ("commons-lang:commons-lang:2.6")
+    api ("org.apache.commons:commons-lang3:3.12.0")
+    api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
+    api ("org.springframework:spring-jms:$springVersion")
+    api ("org.springframework:spring-beans:$springVersion") { transitive=false}
+    api ("org.springframework:spring-core:$springVersion") { transitive=false}
+    api ("org.springframework:spring-context:$springVersion") { transitive=false}
+    api ("org.springframework:spring-aop:$springVersion") { transitive=false}
+    api ("com.thoughtworks.xstream:xstream:1.4.17")
+    api ("commons-io:commons-io:2.10.0")
+    implementation ("aopalliance:aopalliance:1.0")
+    implementation ("org.slf4j:slf4j-api:$slf4jVersion")
 
     umlDoclet("nl.talsmasoftware:umldoclet:1.1.4")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testCompile ('junit:junit:4.13.2')
-    testCompile ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-    testCompile ("org.slf4j:slf4j-simple:$slf4jVersion")
-    testCompile ("org.slf4j:slf4j-log4j12:$slf4jVersion")
+    testImplementation ('junit:junit:4.13.2')
+    testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
+    testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
+    testImplementation ("org.slf4j:slf4j-log4j12:$slf4jVersion")
 
-    testCompile ("org.mockito:mockito-core:$mockitoVersion")
-    testCompile ("org.mockito:mockito-inline:$mockitoVersion")
+    testImplementation ("org.mockito:mockito-core:$mockitoVersion")
+    testImplementation ("org.mockito:mockito-inline:$mockitoVersion")
 
     javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
   }
@@ -160,6 +168,7 @@ subprojects { subproject ->
     configure(options) {
       taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
       options.addStringOption "tagletpath", configurations.javadoc.asPath
+      options.addStringOption('Xdoclint:none', '-quiet')
       options.addBooleanOption "-no-module-directories", true
     }
   }
@@ -177,6 +186,7 @@ subprojects { subproject ->
       taglets = ["com.adaptris.taglet.ConfigTaglet", "com.adaptris.taglet.LicenseTaglet"]
       options.addStringOption "tagletpath", configurations.javadoc.asPath
       options.addBooleanOption "-no-module-directories", true
+      options.addStringOption('Xdoclint:none', '-quiet')
       options.docletpath = configurations.umlDoclet.files.asType(List)
       options.doclet = "nl.talsmasoftware.umldoclet.UMLDoclet"
       options.addStringOption "umlBasePath", destinationDir.getCanonicalPath()
@@ -233,16 +243,19 @@ subprojects { subproject ->
     }
   }
 
-  task copyUnitTestProperties(type: Copy, dependsOn: generateUnitTestProperties) {
-    delete file( testResourcesDir() + '/unit-tests.properties')
-    from file( testResourcesDir() + "/unit-tests.properties.resolved")
-    into (testResourcesDir())
-    rename { String fileName ->
-      fileName.replace("unit-tests.properties.resolved", 'unit-tests.properties')
+  task copyUnitTestProperties() {
+    dependsOn(generateUnitTestProperties)
+    doLast {
+      delete file( testResourcesDir() + '/unit-tests.properties')
+      ant.copy(file: testResourcesDir() + "/unit-tests.properties.resolved",
+              tofile: testResourcesDir() + '/unit-tests.properties') {
+        filterset {
+          filter(token: "JAVA_HOME", value: System.getProperty("java.home").replaceAll("\\\\", "/"))
+          filter(token: "BASE_DIR", value: project.projectDir.getCanonicalPath().replaceAll("\\\\", "/"))
+          filter(token: "BUILD_DIR", value: project.buildDir.getCanonicalPath().replaceAll("\\\\", "/"))
+        }
+      }
     }
-    filter(ReplaceTokens, tokens: [JAVA_HOME: System.getProperty("java.home").replaceAll("\\\\", "/")])
-    filter(ReplaceTokens, tokens: [BASE_DIR: project.projectDir.getCanonicalPath().replaceAll("\\\\", "/")])
-    filter(ReplaceTokens, tokens: [BUILD_DIR: project.buildDir.getCanonicalPath().replaceAll("\\\\", "/")])
   }
 
   task deleteGeneratedFiles(type: Delete) {
@@ -272,7 +285,7 @@ subprojects { subproject ->
   spotbugsTest.enabled = false
   dependencyCheck  {
     suppressionFiles= [ "https://raw.githubusercontent.com/adaptris/interlok/develop/gradle/owasp-exclude.xml" , "$rootDir/gradle/owasp-exclude.xml"]
-    skipConfigurations = [ "antSql", "spotbugs", "umlDoclet", "offlineJavadocPackages", "javadoc", "jacocoAnt", "jacocoAgent", "spotbugsPlugins", "spotbugsSlf4j" ]
+    scanConfigurations = [ "api", "compileClasspath", "runtimeClasspath" ]
     formats = [ "HTML", "JUNIT" ]
     junitFailOnCVSS = 7.0
     failBuildOnCVSS = 7.0
