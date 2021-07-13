@@ -278,7 +278,7 @@ subprojects { subproject ->
       }
     }
     // includeFilter = new File("$rootDir/gradle/spotbugs-filter.xml")
-    // excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
+    excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
   }
 
   // disable spotbugsTests which checks our test code..
