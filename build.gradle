@@ -2,7 +2,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'com.github.spotbugs' version '4.7.1' apply false
+  id 'com.github.spotbugs' version '4.7.2' apply false
   id 'org.owasp.dependencycheck' version '6.2.2' apply false
 }
 
@@ -278,7 +278,7 @@ subprojects { subproject ->
       }
     }
     // includeFilter = new File("$rootDir/gradle/spotbugs-filter.xml")
-    // excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
+    excludeFilter = new File("$rootDir/gradle/spotbugs-exclude.xml")
   }
 
   // disable spotbugsTests which checks our test code..
