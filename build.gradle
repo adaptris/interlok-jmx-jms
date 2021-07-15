@@ -143,7 +143,7 @@ subprojects { subproject ->
     api ("org.springframework:spring-context:$springVersion") { transitive=false}
     api ("org.springframework:spring-aop:$springVersion") { transitive=false}
     api ("com.thoughtworks.xstream:xstream:1.4.17")
-    api ("commons-io:commons-io:2.10.0")
+    api ("commons-io:commons-io:2.11.0")
     implementation ("aopalliance:aopalliance:1.0")
     implementation ("org.slf4j:slf4j-api:$slf4jVersion")
 
