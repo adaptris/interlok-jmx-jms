@@ -1,26 +1,25 @@
 ext {
   componentName='Interlok JMX/Stubs'
   componentDesc="Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion="2.12.3"
+  jacksonVersion="2.12.4"
   activemqVersion = '5.16.2'
 }
 
 dependencies {
-  compile project(':interlok-jmx-jms-common')
-  compile ('junit:junit:4.13.2')
-  compile ("commons-io:commons-io:2.10.0")
+  api project(':interlok-jmx-jms-common')
+  implementation ('junit:junit:4.13.2')
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
-  compile ("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-  compile ("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+  implementation ("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+  implementation ("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
-  compile ("org.apache.activemq:activemq-broker:$activemqVersion")
-  compile ("org.apache.activemq:activemq-jaas:$activemqVersion")
-  compile ("org.apache.activemq:activemq-kahadb-store:$activemqVersion")
-  compile ("org.apache.activemq:activemq-amqp:$activemqVersion")
-  compile ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
-  compile ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
+  implementation ("org.apache.activemq:activemq-broker:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-jaas:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-kahadb-store:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-amqp:$activemqVersion")
+  implementation ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
+  implementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

@@ -5,10 +5,9 @@ ext {
 }
 
 dependencies {
-  compile project(':interlok-jmx-jms-common')
-  compile ("org.apache.activemq:activemq-client:$activemqVersion")
-
-  testCompile project(':interlok-jmx-jms-stubs')
+  api project(':interlok-jmx-jms-common')
+  implementation ("org.apache.activemq:activemq-client:$activemqVersion")
+  testImplementation project(':interlok-jmx-jms-stubs')
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
