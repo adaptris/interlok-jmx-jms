@@ -6,7 +6,7 @@ ext {
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("org.apache.qpid:qpid-jms-client:1.4.1"){
+  implementation ("org.apache.qpid:qpid-jms-client:1.5.0"){
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
