@@ -20,7 +20,7 @@ ext {
   offlineJavadocPackageDir = new File(project.buildDir, "offline-javadoc-packages")
 
   organizationName = "Adaptris Ltd"
-  springVersion = '5.3.14'
+  springVersion = '5.3.15'
   slf4jVersion = '1.7.32'
   mockitoVersion = '4.2.0'
 }
