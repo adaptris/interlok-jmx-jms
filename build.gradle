@@ -22,7 +22,7 @@ ext {
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.15'
   slf4jVersion = '1.7.35'
-  mockitoVersion = '4.3.0'
+  mockitoVersion = '4.3.1'
 }
 
 ext.hostname = { ->
