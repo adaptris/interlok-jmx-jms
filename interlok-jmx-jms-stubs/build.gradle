@@ -2,7 +2,7 @@ ext {
   componentName='Interlok JMX/Stubs'
   componentDesc="Test scaffolding for JMX Tests; of no use at Interlok runtime"
   jacksonVersion="2.13.1"
-  activemqVersion = '5.16.4'
+  activeMqVersion = '5.16.4'
 }
 
 dependencies {
@@ -15,9 +15,9 @@ dependencies {
   implementation ("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
   implementation ("org.apache.activemq:activemq-broker:$activemqVersion")
-  implementation ("org.apache.activemq:activemq-jaas:$activemqVersion")
-  implementation ("org.apache.activemq:activemq-kahadb-store:$activemqVersion")
-  implementation ("org.apache.activemq:activemq-amqp:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-jaas:$activeMqVersion")
+  implementation ("org.apache.activemq:activemq-kahadb-store:$activeMqVersion")
+  implementation ("org.apache.activemq:activemq-amqp:$activeMqVersion")
   implementation ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
   implementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 }
