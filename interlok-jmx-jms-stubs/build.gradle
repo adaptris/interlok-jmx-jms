@@ -14,7 +14,7 @@ dependencies {
   implementation ("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
   implementation ("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
 
-  implementation ("org.apache.activemq:activemq-broker:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-broker:$activeMqVersion")
   implementation ("org.apache.activemq:activemq-jaas:$activeMqVersion")
   implementation ("org.apache.activemq:activemq-kahadb-store:$activeMqVersion")
   implementation ("org.apache.activemq:activemq-amqp:$activeMqVersion")
