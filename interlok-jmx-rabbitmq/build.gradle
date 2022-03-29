@@ -1,6 +1,6 @@
 ext {
-  componentName='Interlok JMX/RabbitMQ'
-  componentDesc="Tunnelling JMX calls via RabbitMQ"
+  componentName = 'Interlok JMX/RabbitMQ'
+  componentDesc = "Tunnelling JMX calls via RabbitMQ"
 }
 
 group = 'com.adaptris.labs'

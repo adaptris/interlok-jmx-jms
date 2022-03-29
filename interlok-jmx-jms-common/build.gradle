@@ -1,6 +1,6 @@
 ext {
-  componentName='Interlok JMX/Common'
-  componentDesc='Common classes required to tunnel JMX calls'
+  componentName = 'Interlok JMX/Common'
+  componentDesc = 'Common classes required to tunnel JMX calls'
 }
 
 dependencies {
