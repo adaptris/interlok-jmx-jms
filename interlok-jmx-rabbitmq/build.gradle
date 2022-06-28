@@ -1,6 +1,6 @@
 ext {
-  componentName='Interlok JMX/RabbitMQ'
-  componentDesc="Tunnelling JMX calls via RabbitMQ"
+  componentName = 'Interlok JMX/RabbitMQ'
+  componentDesc = "Tunnelling JMX calls via RabbitMQ"
 }
 
 group = 'com.adaptris.labs'
@@ -8,7 +8,7 @@ group = 'com.adaptris.labs'
 dependencies {
   api project(':interlok-jmx-jms-common')
   implementation ("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
-  implementation ("com.rabbitmq:amqp-client:5.14.1")
+  implementation ("com.rabbitmq:amqp-client:5.14.2")
 
   testImplementation project(':interlok-jmx-jms-stubs')
   testImplementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")

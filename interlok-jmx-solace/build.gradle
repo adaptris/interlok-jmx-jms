@@ -1,7 +1,7 @@
 ext {
-  componentName='Interlok JMX/Solace'
-  componentDesc="Tunnelling JMX calls via Solace"
-  solaceVersion='10.13.0'
+  componentName = 'Interlok JMX/Solace'
+  componentDesc = "Tunnelling JMX calls via Solace"
+  solaceVersion = '10.14.0'
 }
 
 dependencies {

@@ -1,12 +1,12 @@
 ext {
-  componentName='Interlok JMX/ActiveMQ'
-  componentDesc="Tunnelling JMX calls via ActiveMQ"
-  activemqVersion = '5.16.3'
+  componentName = 'Interlok JMX/ActiveMQ'
+  componentDesc = "Tunnelling JMX calls via ActiveMQ"
+  activeMqVersion = '5.17.1'
 }
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("org.apache.activemq:activemq-client:$activemqVersion")
+  implementation ("org.apache.activemq:activemq-client:$activeMqVersion")
   testImplementation project(':interlok-jmx-jms-stubs')
 }
 
