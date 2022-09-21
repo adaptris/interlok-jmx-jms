@@ -21,7 +21,7 @@ ext {
 
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.23'
-  slf4jVersion = '2.0.1'
+  slf4jVersion = '2.0.2'
   mockitoVersion = '4.8.0'
 }
 
