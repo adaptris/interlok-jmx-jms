@@ -7,7 +7,7 @@ group = 'com.adaptris.labs'
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("com.rabbitmq.jms:rabbitmq-jms:2.4.0")
+  implementation ("com.rabbitmq.jms:rabbitmq-jms:3.0.0")
   implementation ("com.rabbitmq:amqp-client:5.16.0")
 
   testImplementation project(':interlok-jmx-jms-stubs')
