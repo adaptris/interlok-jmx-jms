@@ -2,13 +2,13 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id 'com.github.spotbugs' version '5.0.12' apply false
-  id 'org.owasp.dependencycheck' version '7.2.1' apply false
+  id 'com.github.spotbugs' version '5.0.13' apply false
+  id 'org.owasp.dependencycheck' version '7.4.4' apply false
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.6-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '4.6-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '4.7-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '4.7-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -22,7 +22,7 @@ ext {
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.23'
   slf4jVersion = '2.0.3'
-  mockitoVersion = '4.8.0'
+  mockitoVersion = '4.9.0'
 }
 
 ext.hostname = { ->
@@ -150,7 +150,7 @@ subprojects { subproject ->
     api ("org.springframework:spring-core:$springVersion") { transitive=false}
     api ("org.springframework:spring-context:$springVersion") { transitive=false}
     api ("org.springframework:spring-aop:$springVersion") { transitive=false}
-    api ("com.thoughtworks.xstream:xstream:1.4.19")
+    api ("com.thoughtworks.xstream:xstream:1.4.20")
     api ("commons-io:commons-io:2.11.0")
     implementation ("aopalliance:aopalliance:1.0")
     implementation ("org.slf4j:slf4j-api:$slf4jVersion")
