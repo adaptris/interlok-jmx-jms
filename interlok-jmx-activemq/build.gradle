@@ -1,7 +1,7 @@
 ext {
   componentName = 'Interlok JMX/ActiveMQ'
   componentDesc = "Tunnelling JMX calls via ActiveMQ"
-  activeMqVersion = '5.17.2'
+  activeMqVersion = '5.18.0'
 }
 
 dependencies {
