@@ -1,4 +1,12 @@
-# interlok-jmx-jms [![GitHub tag](https://img.shields.io/github/tag/adaptris/interlok-jmx-jms.svg)](https://github.com/adaptris/interlok-jmx-jms/tags) [![Actions Status](https://github.com/adaptris/interlok-jmx-jms/workflows/Java%20CI/badge.svg)](https://github.com/adaptris/interlok-jmx-jms/actions) [![codecov](https://codecov.io/gh/adaptris/interlok-jmx-jms/branch/develop/graph/badge.svg)](https://codecov.io/gh/adaptris/interlok-jmx-jms) [![Total alerts](https://img.shields.io/lgtm/alerts/g/adaptris/interlok-jmx-jms.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adaptris/interlok-jmx-jms/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/adaptris/interlok-jmx-jms.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/adaptris/interlok-jmx-jms/context:java)
+# interlok-jmx-jms
+
+[![GitHub tag](https://img.shields.io/github/tag/adaptris/interlok-jmx-jms.svg)](https://github.com/adaptris/interlok-jmx-jms/tags)
+[![license](https://img.shields.io/github/license/adaptris/interlok-jmx-jms.svg)](https://github.com/adaptris/interlok-jmx-jms/blob/develop/LICENSE)
+[![Actions Status](https://github.com/adaptris/interlok-jmx-jms/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/adaptris/interlok-jmx-jms/actions)
+[![codecov](https://codecov.io/gh/adaptris/interlok-jmx-jms/branch/develop/graph/badge.svg)](https://codecov.io/gh/adaptris/interlok-jmx-jms)
+[![CodeQL](https://github.com/adaptris/interlok-jmx-jms/workflows/CodeQL/badge.svg)](https://github.com/adaptris/interlok-jmx-jms/security/code-scanning)
+[![Known Vulnerabilities](https://snyk.io/test/github/adaptris/interlok-jmx-jms/badge.svg?targetFile=build.gradle)](https://snyk.io/test/github/adaptris/interlok-jmx-jms?targetFile=build.gradle)
+[![Closed PRs](https://img.shields.io/github/issues-pr-closed/adaptris/interlok-jmx-jms)](https://github.com/adaptris/interlok-jmx-jms/pulls?q=is%3Apr+is%3Aclosed)
 
 
 This project allows you to switch from the default `jmxmp` JMX implementation (which has vulnerabilities) to one that layers JMX operations over JMS.
