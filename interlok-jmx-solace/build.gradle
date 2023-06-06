@@ -1,5 +1,5 @@
 ext {
-  componentName = 'Interlok JMX/Solace'
+  componentName = "Interlok JMX/Solace"
   componentDesc = "Tunnelling JMX calls via Solace"
   solaceVersion = '10.16.0'
 }
@@ -17,13 +17,13 @@ dependencies {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 jar {
@@ -37,8 +37,8 @@ jar {
   }
 }
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+  archives javadocJar
+  archives sourcesJar
 }
 
 publishing {

@@ -59,7 +59,7 @@ BeanClassLoaderAware {
   private RemoteInvocationFactory remoteInvocationFactory = new DefaultRemoteInvocationFactory();
   private MessageConverter messageConverter = new XStreamMessageConverter();
   private long receiveTimeout = TimeUnit.SECONDS.toMillis(60L);
-  private Class serviceInterface;
+  private Class<?> serviceInterface;
   private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
   private Object serviceProxy;
 
@@ -68,7 +68,7 @@ BeanClassLoaderAware {
     jmsDestination = d;
   }
 
-  protected JmsInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class serviceInterface) {
+  protected JmsInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class<?> serviceInterface) {
     this(cf, d);
     setServiceInterface(serviceInterface);
   }
@@ -241,7 +241,7 @@ BeanClassLoaderAware {
    * @throws IllegalArgumentException if the supplied <code>serviceInterface</code> is <code>null</code>, or if the supplied
    *           <code>serviceInterface</code> is not an interface type
    */
-  public void setServiceInterface(Class serviceInterface) {
+  public void setServiceInterface(Class<?> serviceInterface) {
     if (serviceInterface == null || !serviceInterface.isInterface()) {
       throw new IllegalArgumentException("'serviceInterface' must be an interface");
     }

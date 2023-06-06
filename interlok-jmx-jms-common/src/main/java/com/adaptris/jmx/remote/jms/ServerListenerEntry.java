@@ -51,4 +51,5 @@ class ServerListenerEntry implements NotificationListener {
   public ObjectName getObjectName() {
     return objectName;
   }
+  
 }

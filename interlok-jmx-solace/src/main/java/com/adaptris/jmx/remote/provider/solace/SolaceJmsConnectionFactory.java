@@ -1,22 +1,21 @@
 package com.adaptris.jmx.remote.provider.solace;
 
-
-import com.adaptris.jmx.remote.jms.JmsJmxConnectionFactoryImpl;
-import com.solacesystems.jms.SolConnectionFactory;
-import com.solacesystems.jms.SolJmsUtility;
-
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.management.remote.JMXServiceURL;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-class SolaceJmsConnectionFactory  extends JmsJmxConnectionFactoryImpl implements ProviderAttributes {
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import javax.management.remote.JMXServiceURL;
+
+import com.adaptris.jmx.remote.jms.JmsJmxConnectionFactoryImpl;
+import com.solacesystems.jms.SolConnectionFactory;
+import com.solacesystems.jms.SolJmsUtility;
+
+class SolaceJmsConnectionFactory extends JmsJmxConnectionFactoryImpl implements ProviderAttributes {
 
   private transient SolConnectionFactory factory;
-  private transient Object lock = new Object();
   private transient String brokerURL;
 
   protected SolaceJmsConnectionFactory(Map<String, ?> env, JMXServiceURL url) throws IOException {
@@ -26,8 +25,7 @@ class SolaceJmsConnectionFactory  extends JmsJmxConnectionFactoryImpl implements
       factory = SolJmsUtility.createConnectionFactory();
       if (jmsEnvironment.containsKey(ATTR_BACKUP_BROKER_URLS)) {
         factory.setHost(brokerURL + "," + jmsEnvironment.get(ATTR_BACKUP_BROKER_URLS));
-      }
-      else {
+      } else {
         factory.setHost(getBrokerURL());
       }
       if (jmsEnvironment.containsKey(ATTR_CLIENT_ID)) {
@@ -75,4 +73,5 @@ class SolaceJmsConnectionFactory  extends JmsJmxConnectionFactoryImpl implements
   public String getBrokerURL() {
     return brokerURL;
   }
+
 }

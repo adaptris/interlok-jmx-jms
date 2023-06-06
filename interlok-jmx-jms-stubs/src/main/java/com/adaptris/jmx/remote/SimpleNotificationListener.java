@@ -12,15 +12,16 @@ public class SimpleNotificationListener implements NotificationListener, Seriali
   private static final int DEFAULT_WAIT_INTERVAL = 100;
   private static final long serialVersionUID = 2013092601L;
 
-  private List<Notification> notifications = new ArrayList<Notification>();
+  private List<Notification> notifications = new ArrayList<>();
 
   @Override
   public void handleNotification(Notification notification, Object handback) {
     notifications.add(notification);
   }
 
+  @Override
   public List<Notification> getNotifications() {
-    return new ArrayList(notifications);
+    return new ArrayList<>(notifications);
   }
 
   public void waitForMessages(int count) throws Exception {
@@ -30,4 +31,5 @@ public class SimpleNotificationListener implements NotificationListener, Seriali
       totalWaitTime += DEFAULT_WAIT_INTERVAL;
     }
   }
+
 }

@@ -1,13 +1,15 @@
 package com.adaptris.jmx.remote.jms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
@@ -20,19 +22,17 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import com.adaptris.jmx.remote.SimpleManagementBean;
 import com.adaptris.jmx.remote.SimpleManagementBeanMBean;
 import com.adaptris.jmx.remote.SimpleNotificationBean;
 import com.adaptris.jmx.remote.SimpleNotificationBeanMBean;
 import com.adaptris.jmx.remote.SimpleNotificationListener;
 
-@SuppressWarnings("deprecation")
 public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
-
-  public JmsJmxConnectorServerTest() {
-  }
 
   @Test
   public void testGetJMXServiceURL() throws Exception {
@@ -41,8 +41,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
     try {
       jmxServer = createAndRegister(jmxServiceUrl);
       assertEquals(jmxServiceUrl, jmxServer.getAddress());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -53,10 +52,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_TOPIC);
     try {
       jmxServer = createAndRegister(jmxServiceUrl);
-      Map attr = jmxServer.getAttributes();
+      Map<String, ?> attr = jmxServer.getAttributes();
       assertEquals("com.adaptris.jmx.remote.provider", attr.get(JMXConnectorServerFactory.PROTOCOL_PROVIDER_PACKAGES).toString());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -69,8 +67,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer = createAndRegister(jmxServiceUrl);
       jmxServer.start();
       assertTrue(jmxServer.isActive());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -84,8 +81,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxServer.start();
       assertTrue(jmxServer.isActive());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -100,14 +96,12 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       try {
         jmxServer.start();
         fail();
-      }
-      catch (IOException expected) {
+      } catch (IOException expected) {
         assertEquals("start() after close() is not valid", expected.getMessage());
       }
       assertFalse(jmxServer.isActive());
 
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -121,8 +115,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.stop();
       jmxServer.stop();
       assertFalse(jmxServer.isActive());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
     }
   }
@@ -156,12 +149,10 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       try {
         serverConnection.removeNotificationListener(connectorServerObjectName, listener1, null, null);
         fail("Successfully removed a listener, when it doesn't exist");
-      }
-      catch (ListenerNotFoundException expected) {
+      } catch (ListenerNotFoundException expected) {
 
       }
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -191,8 +182,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       listener.waitForMessages(1);
       assertEquals(1, listener.getNotifications().size());
       serverConnection.removeNotificationListener(objName, listener);
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
 
@@ -224,8 +214,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       assertEquals(0, listener.getNotifications().size());
       serverConnection.removeNotificationListener(objName, listener);
 
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
 
@@ -236,7 +225,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
   public void testNotificationListener_AddRemove_Queues() throws Exception {
     JMXConnectorServer jmxServer = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     JMXConnector jmxClient = null;
 
     try {
@@ -253,12 +242,10 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       try {
         serverConnection.removeNotificationListener(connectorServerObjectName, listener1, null, null);
         fail("Successfully removed a listener, when it doesn't exist");
-      }
-      catch (ListenerNotFoundException expected) {
+      } catch (ListenerNotFoundException expected) {
 
       }
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
 
@@ -280,8 +267,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       for (ObjectName name : names) {
         log.trace("Found [" + name + "]");
       }
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
 
@@ -299,10 +285,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       serverConnection.unregisterMBean(objName);
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -320,8 +305,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
       assertNotNull(serverConnection.queryMBeans(null, null));
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -349,8 +333,7 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       // Don't work which means coverage is going to be SUXORS
       // assertNotNull(serverConnection.createMBean(SimpleManagementBean.class.getCanonicalName(), objName, null, null, null));
       // serverConnection.unregisterMBean(objName);
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -368,10 +351,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       assertNotNull(serverConnection.getObjectInstance(objName));
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -389,10 +371,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       assertTrue(serverConnection.getMBeanCount() > 0);
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -410,17 +391,15 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       try {
         serverConnection.getAttribute(objName, getName());
         fail();
-      }
-      catch (AttributeNotFoundException expected) {
+      } catch (AttributeNotFoundException expected) {
         // Yeah, it's a delegate method so we don't actually care whether we can find the attribute
         // just that the method is in fact called.
       }
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -438,14 +417,10 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
-      AttributeList list = serverConnection.getAttributes(objName, new String[]
-      {
-        getName()
-      });
+      createAndRegisterBean(getName(), objName);
+      AttributeList list = serverConnection.getAttributes(objName, new String[] { getName() });
       assertEquals(0, list.size());
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -463,17 +438,15 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       try {
         serverConnection.setAttribute(objName, new Attribute(getName(), getName()));
         fail();
-      }
-      catch (AttributeNotFoundException expected) {
+      } catch (AttributeNotFoundException expected) {
         // Yeah, it's a delegate method so we don't actually care whether we can find the attribute
         // just that the method is in fact called.
       }
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -491,12 +464,11 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       AttributeList list = new AttributeList();
       list.add(new Attribute(getName(), getName()));
       assertEquals(0, serverConnection.setAttributes(objName, list).size());
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -514,11 +486,10 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       assertNotNull(serverConnection.getDefaultDomain());
       assertNotNull(serverConnection.getDomains());
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -536,10 +507,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       assertNotNull(serverConnection.getMBeanInfo(objName));
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }
@@ -557,10 +527,9 @@ public class JmsJmxConnectorServerTest extends ActiveMqBaseCase {
       jmxServer.start();
       jmxClient = createAndConnect(jmxServiceUrl);
       MBeanServerConnection serverConnection = jmxClient.getMBeanServerConnection();
-      SimpleManagementBean bean = createAndRegisterBean(getName(), objName);
+      createAndRegisterBean(getName(), objName);
       assertTrue(serverConnection.isInstanceOf(objName, SimpleManagementBeanMBean.class.getCanonicalName()));
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }

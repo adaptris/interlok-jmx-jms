@@ -74,12 +74,12 @@ abstract class MBeanServerConnectionProxy implements MBeanServerConnection {
   }
 
   @Override
-  public Set queryMBeans(ObjectName name, QueryExp query) throws IOException {
+  public Set<ObjectInstance> queryMBeans(ObjectName name, QueryExp query) throws IOException {
     return connection.queryMBeans(name, query);
   }
 
   @Override
-  public Set queryNames(ObjectName name, QueryExp query) throws IOException {
+  public Set<ObjectName> queryNames(ObjectName name, QueryExp query) throws IOException {
     return connection.queryNames(name, query);
   }
 
@@ -239,4 +239,5 @@ abstract class MBeanServerConnectionProxy implements MBeanServerConnection {
       log.trace(format.toString(), params);
     }
   }
+  
 }

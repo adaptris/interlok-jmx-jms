@@ -1,12 +1,10 @@
 package com.adaptris.jmx.remote;
 
-
 import java.net.URI;
 import java.util.UUID;
+
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.store.memory.MemoryPersistenceAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class EmbeddedActiveMq {
 
@@ -14,12 +12,11 @@ public class EmbeddedActiveMq {
   private static final String OPENWIRE_URL_PREFIX = "tcp://localhost:";
   private static final String DEFAULT_URL_SUFFIX = "?maximumConnections=1000&wireFormat.maxInactivityDuration=0";
 
-  private static Logger log = LoggerFactory.getLogger(EmbeddedActiveMq.class);
   private BrokerService broker = null;
   private Integer amqpPort;
   private Integer openwirePort;
   private String amqpConnectorURI;
-  private String openwireConnectorURI;;
+  private String openwireConnectorURI;
   private String brokerName;
 
   static {
@@ -60,18 +57,13 @@ public class EmbeddedActiveMq {
   }
 
   public void destroy() throws Exception {
-    new Thread(new Runnable() {
+    new Thread(() -> {
+      try {
+        stop();
+        PortManager.release(amqpPort);
+        PortManager.release(openwirePort);
+      } catch (Exception e) {
 
-      @Override
-      public void run() {
-        try {
-          stop();
-          PortManager.release(amqpPort);
-          PortManager.release(openwirePort);
-        }
-        catch (Exception e) {
-
-        }
       }
     }).start();
   }
@@ -90,7 +82,6 @@ public class EmbeddedActiveMq {
   public String getAmqpBrokerUrl() {
     return AMQP_URL_PREFIX + amqpPort;
   }
-
 
   public static String createSafeUniqueId() {
     return UUID.randomUUID().toString().replaceAll(":", "").replaceAll("-", "");
