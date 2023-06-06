@@ -12,7 +12,8 @@ public abstract class JmsHelper {
   /**
    * Delete a {@link TemporaryQueue} without logging any errors.
    *
-   * @param q the queue.
+   * @param q
+   *          the queue.
    */
   public static void deleteQuietly(TemporaryQueue q) {
     if (q == null) {
@@ -20,8 +21,7 @@ public abstract class JmsHelper {
     }
     try {
       q.delete();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
 
     }
   }
@@ -29,7 +29,8 @@ public abstract class JmsHelper {
   /**
    * Delete a {@link TemporaryTopic} without logging any errors.
    *
-   * @param t the topic
+   * @param t
+   *          the topic
    */
   public static void deleteQuietly(TemporaryTopic t) {
     if (t == null) {
@@ -37,8 +38,7 @@ public abstract class JmsHelper {
     }
     try {
       t.delete();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
 
     }
   }
@@ -46,7 +46,8 @@ public abstract class JmsHelper {
   /**
    * Close a {@link Connection} without logging any errors or stopping the connection first.
    *
-   * @param con the queue.
+   * @param con
+   *          the queue.
    * @see #closeQuietly(Connection, boolean)
    */
   public static void closeQuietly(Connection con) {
@@ -56,8 +57,10 @@ public abstract class JmsHelper {
   /**
    * Close a {@link Connection} without logging any errors.
    *
-   * @param con the queue.
-   * @param stopFirst whether or not to stop the connection first.
+   * @param con
+   *          the queue.
+   * @param stopFirst
+   *          whether or not to stop the connection first.
    */
   public static void closeQuietly(Connection con, boolean stopFirst) {
     if (con == null) {
@@ -68,23 +71,22 @@ public abstract class JmsHelper {
         stopQuietly(con);
       }
       con.close();
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
     }
   }
 
   private static void stopQuietly(Connection con) {
     try {
       con.stop();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
     }
   }
 
   /**
    * Close a {@link Session} without logging any errors.
    *
-   * @param session the session.
+   * @param session
+   *          the session.
    */
   public static void closeQuietly(Session session) {
     if (session == null) {
@@ -92,15 +94,15 @@ public abstract class JmsHelper {
     }
     try {
       session.close();
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
     }
   }
 
   /**
    * Close a {@link MessageProducer} without logging any errors.
    *
-   * @param producer the producer.
+   * @param producer
+   *          the producer.
    */
   public static void closeQuietly(MessageProducer producer) {
     if (producer == null) {
@@ -108,15 +110,15 @@ public abstract class JmsHelper {
     }
     try {
       producer.close();
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
     }
   }
 
   /**
    * Close a {@link MessageConsumer} without logging any errors.
    *
-   * @param consumer the consumer.
+   * @param consumer
+   *          the consumer.
    */
   public static void closeQuietly(MessageConsumer consumer) {
     if (consumer == null) {
@@ -125,14 +127,13 @@ public abstract class JmsHelper {
     boolean wasInterrupted = Thread.interrupted();
     try {
       consumer.close();
-    }
-    catch (Exception ex) {
-    }
-    finally {
+    } catch (Exception ex) {
+    } finally {
       if (wasInterrupted) {
         // Reset the interrupted flag as it was before.
         Thread.currentThread().interrupt();
       }
     }
   }
+
 }

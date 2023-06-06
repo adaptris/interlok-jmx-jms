@@ -1,35 +1,34 @@
 package com.adaptris.jmx.remote.jms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.io.IOException;
 import java.util.Collections;
+
 import javax.management.ListenerNotFoundException;
 import javax.management.Notification;
-import javax.management.ObjectName;
 import javax.management.remote.JMXConnectionNotification;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import com.adaptris.jmx.remote.SimpleNotificationListener;
 
-@SuppressWarnings("deprecation")
 public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
-
-  public JmsJmxConnectorClientTest() {
-  }
 
   @Test
   public void testConnect() throws Exception {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -37,8 +36,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       assertNotNull(jmxClient.getConnectionId());
       String connectionId = jmxClient.getConnectionId();
       assertTrue(connectionId.startsWith("activemq://" + broker.getBrokerUrl()));
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -49,15 +47,14 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
-      jmxClient.connect(Collections.EMPTY_MAP);
+      jmxClient.connect(Collections.emptyMap());
       assertNotNull(jmxClient.getConnectionId());
       assertTrue(jmxClient.getConnectionId().startsWith("activemq://" + broker.getBrokerUrl()));
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -68,7 +65,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -78,8 +75,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       jmxClient.connect(); // No problems
       // Only 1 notification though; as we won't connect again.
       assertEquals(1, listener.getNotifications().size());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -90,7 +86,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -102,13 +98,11 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       try {
         jmxClient.connect(); // This is apparently mean to throw an IOException according to the javadocs.
         fail();
-      }
-      catch (IOException expected) {
+      } catch (IOException expected) {
         assertEquals("connect() impossible after close", expected.getMessage());
       }
       assertEquals(2, listener.getNotifications().size());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -119,7 +113,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -129,8 +123,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       jmxClient.close();
       jmxClient.close();
       assertEquals(2, listener.getNotifications().size());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -141,7 +134,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -150,12 +143,10 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       try {
         jmxClient.getMBeanServerConnection(null);
         fail();
-      }
-      catch (UnsupportedOperationException expected) {
+      } catch (UnsupportedOperationException expected) {
 
       }
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -166,7 +157,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
     JMXConnectorServer jmxServer = null;
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxServer = createAndStart(jmxServiceUrl);
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
@@ -183,8 +174,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       assertEquals("Connection Closed", close.getMessage());
       assertEquals(2L, close.getSequenceNumber());
       assertEquals(JMXConnectionNotification.CLOSED, close.getType());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -194,7 +184,7 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
   public void testNotificationListener_AddRemove() throws Exception {
     JMXConnector jmxClient = null;
     JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE);
-    ObjectName objName = createObjectName("JmxJms:name=" + getName());
+    createObjectName("JmxJms:name=" + getName());
     try {
       jmxClient = JMXConnectorFactory.newJMXConnector(jmxServiceUrl, createEnvironment());
       SimpleNotificationListener listener = new SimpleNotificationListener();
@@ -204,13 +194,12 @@ public class JmsJmxConnectorClientTest extends ActiveMqBaseCase {
       try {
         jmxClient.removeConnectionNotificationListener(listener, null, null);
         fail("Successfully removed a listener, when it doesn't exist");
-      }
-      catch (ListenerNotFoundException expected) {
+      } catch (ListenerNotFoundException expected) {
 
       }
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
     }
   }
+
 }

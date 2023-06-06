@@ -10,4 +10,5 @@ class QueueServiceExporter extends ExtendedJmsInvokerServiceExporter<Queue> {
   protected Queue createReplyTo(String name, Session session) throws JMSException {
     return session.createQueue(name);
   }
+
 }

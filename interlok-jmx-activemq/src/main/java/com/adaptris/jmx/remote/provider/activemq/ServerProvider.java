@@ -13,7 +13,8 @@ import com.adaptris.jmx.remote.jms.JmsJmxConnectorServer;
 public class ServerProvider implements JMXConnectorServerProvider {
 
   @Override
-  public JMXConnectorServer newJMXConnectorServer(JMXServiceURL url, Map environment, MBeanServer server) throws IOException {
+  public JMXConnectorServer newJMXConnectorServer(JMXServiceURL url, Map<String, ?> environment, MBeanServer server) throws IOException {
     return new JmsJmxConnectorServer(url, environment, server, new ActiveMqJmsConnectionFactory(environment, url));
   }
+
 }

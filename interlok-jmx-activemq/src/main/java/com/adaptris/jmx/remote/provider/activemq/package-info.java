@@ -48,9 +48,9 @@
  * brokerUser and brokerPassword.
  * </p>
  * <ul>
- * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Queue&jmx.destination=jmxQueue</li>
- * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Topic&jmx.destination=jmxTopic</li>
- * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Topic&jmx.destination=jmxTopic&jmx.brokerUser=myUserName&jmx.brokerPassword=MyPassword</li>
+ * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Queue&amp;jmx.destination=jmxQueue</li>
+ * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Topic&amp;jmx.destination=jmxTopic</li>
+ * <li>service:jmx:activemq:///tcp://localhost:61616?jmx.type=Topic&amp;jmx.destination=jmxTopic&amp;jmx.brokerUser=myUserName&amp;jmx.brokerPassword=MyPassword</li>
  * </ul>
  * <p>
  * Or if you want to have things in the initial environment, then you could have something like

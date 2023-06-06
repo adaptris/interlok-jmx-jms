@@ -14,7 +14,7 @@ import javax.jms.TemporaryTopic;
  */
 final class JmsTopicInvokerProxy extends JmsInvokerProxy<TemporaryTopic> {
 
-  public JmsTopicInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class serviceInterface) {
+  public JmsTopicInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class<?> serviceInterface) {
     super(cf, d, serviceInterface);
   }
 
@@ -33,4 +33,5 @@ final class JmsTopicInvokerProxy extends JmsInvokerProxy<TemporaryTopic> {
     requestMessage.setJMSReplyTo(tmpDest);
     requestMessage.setStringProperty(ExtendedJmsInvokerServiceExporter.FALLBACK_REPLY_TO_KEY, tmpDest.getTopicName());
   }
+
 }

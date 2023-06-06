@@ -23,7 +23,6 @@ public class XStreamMessageConverter implements MessageConverter {
     // Use Unsafe because ObjectName doesn't have a no-arg constructor.
     xstream = new XStream(new SunUnsafeReflectionProvider(), new StaxDriver());
     // will stop the sytem .err nonense.
-    XStream.setupDefaultSecurity(xstream);
     xstream.addPermission(AnyTypePermission.ANY);
   }
 
@@ -42,7 +41,7 @@ public class XStreamMessageConverter implements MessageConverter {
   @Override
   public Object fromMessage(Message message) throws JMSException, MessageConversionException {
     if (message instanceof TextMessage) {
-      String contents = ( (TextMessage) message).getText();
+      String contents = ((TextMessage) message).getText();
       if (!isEmpty(contents)) {
         return xstream.fromXML(contents);
       }

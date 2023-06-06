@@ -2,7 +2,6 @@ package com.adaptris.jmx.remote;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanNotificationInfo;
@@ -15,20 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SimpleNotificationBean extends NotificationBroadcasterSupport implements SimpleNotificationBeanMBean {
+
   private String name;
   private transient Logger log = LoggerFactory.getLogger(this.getClass());
-  private transient List<NotificationListener> listeners = new ArrayList<NotificationListener>();
-
-  private SimpleNotificationBean() {
-    super();
-    name = UUID.randomUUID().toString().replaceAll(":", "").replaceAll("-", "");
-  }
+  private transient List<NotificationListener> listeners = new ArrayList<>();
 
   public SimpleNotificationBean(String name) {
-    super(new MBeanNotificationInfo(new String[]
-    {
-      name
-    }, Notification.class.getName(), "Notification about " + name));
+    super(new MBeanNotificationInfo(new String[] { name }, Notification.class.getName(), "Notification about " + name));
     this.name = name;
   }
 
@@ -56,7 +48,7 @@ public class SimpleNotificationBean extends NotificationBroadcasterSupport imple
   }
 
   public List<NotificationListener> getListeners() {
-    return new ArrayList<NotificationListener>(listeners);
+    return new ArrayList<>(listeners);
   }
 
   @Override
@@ -64,6 +56,6 @@ public class SimpleNotificationBean extends NotificationBroadcasterSupport imple
     log.trace("sendNotification [" + notification.getMessage() + "]");
     super.sendNotification(notification);
     log.trace("Notification Sent");
-
   }
+
 }

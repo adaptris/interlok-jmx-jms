@@ -1,12 +1,14 @@
 package com.adaptris.jmx.remote.provider.activemq;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+
 import javax.jms.JMSException;
 import javax.management.JMX;
 import javax.management.MBeanServerConnection;
@@ -16,8 +18,10 @@ import javax.management.StandardEmitterMBean;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import com.adaptris.jmx.remote.SimpleManagementBean;
 import com.adaptris.jmx.remote.SimpleManagementBeanMBean;
 import com.adaptris.jmx.remote.SimpleNotificationBean;
@@ -26,10 +30,10 @@ import com.adaptris.jmx.remote.SimpleNotificationListener;
 import com.adaptris.jmx.remote.jms.ActiveMqBaseCase;
 import com.adaptris.jmx.remote.jms.JmsJmxConnectionFactory;
 
-@SuppressWarnings("deprecation")
 public class ActiveMqProviderTest extends ActiveMqBaseCase {
 
   private static final String ACTIVEMQ_URL_EXTRA_SUFFIX = "wireFormat.maxInactivityDuration=0";
+
   @Test
   public void testMBean_UseQueues() throws Exception {
     JMXConnectorServer jmxServer = null;
@@ -48,8 +52,7 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
       assertEquals(0, remoteBean.getCurrentCount());
       remoteBean.incrementCount(10);
       assertEquals(10, realBean.getCurrentCount());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -73,8 +76,7 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
       assertEquals(0, remoteBean.getCurrentCount());
       remoteBean.incrementCount(10);
       assertEquals(10, realBean.getCurrentCount());
-    }
-    finally {
+    } finally {
       closeQuietly(jmxServer);
       IOUtils.closeQuietly(jmxClient);
     }
@@ -82,14 +84,13 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
 
   @Test
   public void testFactory_AdditionalQueryOnURL_Preserved() throws Exception {
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE + "&"
-        + ACTIVEMQ_URL_EXTRA_SUFFIX);
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(
+        JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_QUEUE + "&" + ACTIVEMQ_URL_EXTRA_SUFFIX);
     try {
       ActiveMqJmsConnectionFactory fact = new ActiveMqJmsConnectionFactory(new HashMap<String, Object>(), jmxServiceUrl);
       String url = fact.getBrokerURL();
       assertEquals(broker.getBrokerUrl() + "?" + ACTIVEMQ_URL_EXTRA_SUFFIX, url);
-    }
-    finally {
+    } finally {
     }
   }
 
@@ -100,16 +101,15 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
     try {
       assertNotNull(fact.createConnection());
       assertNotNull(fact.createConnection("guest", "guest"));
-    }
-    finally {
+    } finally {
       fact.destroy();
     }
   }
 
   @Test
   public void testFactory_CreateConnection_WaitForBroker() throws Exception {
-    JMXServiceURL jmxServiceUrl = new JMXServiceURL(JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_TOPIC + "&"
-        + JmsJmxConnectionFactory.ATTR_RETRY_INTERVAL_MS + "=100");
+    JMXServiceURL jmxServiceUrl = new JMXServiceURL(
+        JMX_URL_PREFIX + broker.getBrokerUrl() + JMX_URL_SUFFIX_TOPIC + "&" + JmsJmxConnectionFactory.ATTR_RETRY_INTERVAL_MS + "=100");
     final long maxWait = 3000L;
     final ActiveMqJmsConnectionFactory fact = new ActiveMqJmsConnectionFactory(new HashMap<String, Object>(), jmxServiceUrl);
     try {
@@ -117,20 +117,15 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
       log.info(getName() + " Broker Stopped");
       // Create a cyclic barrier to wait for connection operation to finish
       final CyclicBarrier gate = new CyclicBarrier(2);
-      Thread initThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            assertNotNull(fact.createConnection());
-          }
-          catch (JMSException e) {
+      Thread initThread = new Thread(() -> {
+        try {
+          assertNotNull(fact.createConnection());
+        } catch (JMSException e) {
 
-          }
-          try {
-            gate.await(maxWait, TimeUnit.MILLISECONDS);
-          }
-          catch (Exception gateException) {
-          }
+        }
+        try {
+          gate.await(maxWait, TimeUnit.MILLISECONDS);
+        } catch (Exception gateException) {
         }
       });
       initThread.start();
@@ -138,8 +133,7 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
       log.info(getName() + " Broker Restarted");
       broker.start();
       gate.await(maxWait, TimeUnit.MILLISECONDS);
-    }
-    finally {
+    } finally {
       fact.destroy();
     }
   }
@@ -152,7 +146,7 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
     JMXConnector jmxClient = null;
 
     try {
-      Map env = createEnvironment();
+      Map<String, Object> env = createEnvironment();
       env.put(JmsJmxConnectionFactory.ATTR_RETRY_INTERVAL_MS, "100");
       jmxServer = createAndStart(jmxServiceUrl, env);
       jmxClient = createAndConnect(jmxServiceUrl, env);
@@ -180,8 +174,7 @@ public class ActiveMqProviderTest extends ActiveMqBaseCase {
       emitter.sendNotification(n2);
       listener.waitForMessages(2);
       assertEquals(2, listener.getNotifications().size());
-    }
-    finally {
+    } finally {
       IOUtils.closeQuietly(jmxClient);
       closeQuietly(jmxServer);
     }

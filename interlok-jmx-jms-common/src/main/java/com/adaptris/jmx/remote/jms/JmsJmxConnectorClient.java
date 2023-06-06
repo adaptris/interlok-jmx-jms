@@ -18,19 +18,15 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 import javax.security.auth.Subject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Implementation of {@link JMXConnector} that provides JMX connectivity via JMS.
  *
  * <p>
  * It is expected that this class will be constructed using
- * {@link javax.management.remote.JMXConnectorFactory#newJMXConnector(JMXServiceURL, Map)}; rather than directly via the
- * constructor. As the various provider (e.g. {@link com.adaptris.jmx.remote.provider.activemq.ClientProvider}) will initialise the
- * various connection properties that are required for connecting to the JMS provider, effectively the
- * {@link JmsJmxConnectorClient#connect(Map)} method will not override any properties that have already been set in the initial set
- * of attributes.
+ * {@link javax.management.remote.JMXConnectorFactory#newJMXConnector(JMXServiceURL, Map)}; rather than directly via the constructor. As the
+ * various provider (e.g. <em>com.adaptris.jmx.remote.provider.activemq.ClientProvider</em>) will initialise the various connection
+ * properties that are required for connecting to the JMS provider, effectively the {@link JmsJmxConnectorClient#connect(Map)} method will
+ * not override any properties that have already been set in the initial set of attributes.
  * </p>
  * <p>
  * Note that the {@link #getConnectionId()} returned by this client is auto-generated upon each new connection attempt. It will not
@@ -79,17 +75,16 @@ public class JmsJmxConnectorClient implements JMXConnector {
       }
 
     };
+
     abstract String notificationType();
 
     abstract String notificationText();
   }
 
-  private static final Logger log = LoggerFactory.getLogger(JMXConnector.class);
   private AtomicLong notificationNumber = new AtomicLong();
   private transient NotificationBroadcasterSupport connectionNotifier = new NotificationBroadcasterSupport();
   private transient Map<String, ?> defaultEnvironment;
-  private transient String destinationName;
-  private transient JmsInvokerProxy proxy;
+  private transient JmsInvokerProxy<?> proxy;
   private transient JmsMBeanServerConnectionClient client;
   private transient JmsJmxConnectionFactory factory;
   private transient JMXServiceURL serviceURL;
@@ -132,10 +127,11 @@ public class JmsJmxConnectorClient implements JMXConnector {
   /**
    * Establishes the connection to the connector server.
    *
-   * @param env the properties of the connection. It will be ignored.
+   * @param env
+   *          the properties of the connection. It will be ignored.
    */
   @Override
-  public void connect(Map env) throws IOException {
+  public void connect(Map<String, ?> env) throws IOException {
     connect();
   }
 
@@ -146,7 +142,7 @@ public class JmsJmxConnectorClient implements JMXConnector {
 
   /**
    * Note that this is unsupported and will throw an {@link UnsupportedOperationException}.
-   * 
+   *
    */
   @Override
   public MBeanServerConnection getMBeanServerConnection(Subject delegationSubject) {
@@ -199,10 +195,10 @@ public class JmsJmxConnectorClient implements JMXConnector {
         path = path.substring(1);
       }
       result = protocol + "://" + JmsJmxConnectionFactoryImpl.removeQuery(new URI(path)) + " " + UUID.randomUUID().toString();
-    }
-    catch (URISyntaxException e) {
+    } catch (URISyntaxException e) {
       throw new IOException(e);
     }
     return result;
   }
+
 }

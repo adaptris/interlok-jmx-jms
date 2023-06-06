@@ -37,7 +37,7 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
 
   private static final Logger log = LoggerFactory.getLogger(JmsJmxConnectorServer.class);
   private JMXServiceURL url;
-  private final Map env;
+  private final Map<String, ?> env;
   private ConnectionState connectionState = ConnectionState.FRESH;
   private SimpleMessageListenerContainer listener;
   private JmsMBeanServerConnectionListener jmsServerConnection;
@@ -46,13 +46,19 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
   /**
    * Constructor.
    *
-   * @param url the JMXServiceURL.
-   * @param environment the initial environment for {@link #getAttributes()}
-   * @param server the {@link MBeanServer} that we should be attached to.
-   * @param factory the {@link JmsJmxConnectionFactory} that will used to connection to the JMS Provider.
-   * @throws IOException wrapping any other exception.
+   * @param url
+   *          the JMXServiceURL.
+   * @param environment
+   *          the initial environment for {@link #getAttributes()}
+   * @param server
+   *          the {@link MBeanServer} that we should be attached to.
+   * @param factory
+   *          the {@link JmsJmxConnectionFactory} that will used to connection to the JMS Provider.
+   * @throws IOException
+   *           wrapping any other exception.
    */
-  public JmsJmxConnectorServer(JMXServiceURL url, Map environment, MBeanServer server, JmsJmxConnectionFactory factory) throws IOException {
+  public JmsJmxConnectorServer(JMXServiceURL url, Map<String, ?> environment, MBeanServer server, JmsJmxConnectionFactory factory)
+      throws IOException {
     super(server);
     this.url = url;
     env = environment;
@@ -70,7 +76,7 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
     if (connectionState != ConnectionState.STARTED) {
       try {
         listener = new SimpleMessageListenerContainer();
-        ExtendedJmsInvokerServiceExporter service = factory.createServiceExporter();
+        ExtendedJmsInvokerServiceExporter<?> service = factory.createServiceExporter();
         jmsServerConnection = new JmsMBeanServerConnectionListener(getMBeanServer(), factory);
         service.setServiceInterface(JmsMBeanServerConnection.class);
         service.setService(jmsServerConnection);
@@ -83,8 +89,7 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
         service.afterPropertiesSet();
         listener.start();
         connectionState = ConnectionState.STARTED;
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         throw new IOException(e);
       }
     }
@@ -107,8 +112,7 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
       if (container != null) {
         container.stop();
       }
-    }
-    catch (org.springframework.jms.JmsException e) {
+    } catch (org.springframework.jms.JmsException e) {
       throw new IOException(e);
     }
   }
@@ -144,7 +148,7 @@ public class JmsJmxConnectorServer extends JMXConnectorServer {
    * {@inheritDoc}
    */
   @Override
-  public Map getAttributes() {
+  public Map<String, ?> getAttributes() {
     return Collections.unmodifiableMap(env);
   }
 

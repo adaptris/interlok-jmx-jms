@@ -23,19 +23,16 @@ public abstract class ExtendedJmsInvokerServiceExporter<S extends Destination> e
   protected transient final Logger log = LoggerFactory.getLogger("com.adaptris.jmx.remote.jms.JmsInvoker");
 
   @Override
-  protected void writeRemoteInvocationResult(Message requestMessage, Session session, RemoteInvocationResult result)
-      throws JMSException {
+  protected void writeRemoteInvocationResult(Message requestMessage, Session session, RemoteInvocationResult result) throws JMSException {
 
     Message response = createResponseMessage(requestMessage, session, result);
     MessageProducer producer = session.createProducer(getReplyTo(requestMessage, session));
     try {
       producer.send(response);
-    }
-    finally {
+    } finally {
       JmsUtils.closeMessageProducer(producer);
     }
   }
-
 
   protected Destination getReplyTo(Message request, Session session) throws JMSException {
     Destination result = request.getJMSReplyTo();
