@@ -23,7 +23,8 @@ jar {
               "Implementation-Title": componentName,
               "Implementation-Version": project.version,
               "Implementation-Vendor-Id": project.group,
-              "Implementation-Vendor": organizationName)
+              "Implementation-Vendor": organizationName,
+              "Add-Opens": "java.base/java.lang java.base/java.util java.base/java.lang.reflect java.management/javax.management")
   }
 }
 artifacts {
