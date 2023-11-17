@@ -1,19 +1,19 @@
 ext {
-  componentName = 'Interlok JMX/Common'
-  componentDesc = 'Common classes required to tunnel JMX calls'
+  componentName = "Interlok JMX/Common"
+  componentDesc = "Common classes required to tunnel JMX calls"
 }
 
 dependencies {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 jar {
@@ -23,12 +23,13 @@ jar {
               "Implementation-Title": componentName,
               "Implementation-Version": project.version,
               "Implementation-Vendor-Id": project.group,
-              "Implementation-Vendor": organizationName)
+              "Implementation-Vendor": organizationName,
+              "Add-Opens": "java.base/java.lang java.base/java.util java.base/java.lang.reflect java.management/javax.management")
   }
 }
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+  archives javadocJar
+  archives sourcesJar
 }
 
 publishing {

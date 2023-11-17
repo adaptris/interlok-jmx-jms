@@ -5,26 +5,25 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.TemporaryTopic;
+
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.adaptris.jmx.remote.EmbeddedActiveMq;
 
 public class JmsHelperTest {
   protected EmbeddedActiveMq broker;
 
-  public JmsHelperTest() {
-  }
-
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     broker = new EmbeddedActiveMq();
     broker.start();
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     broker.destroy();
   }

@@ -23,14 +23,13 @@ import com.adaptris.jmx.remote.jms.JmsJmxConnectionFactoryImpl;
 
 class ActiveMqJmsConnectionFactory extends JmsJmxConnectionFactoryImpl {
 
-  private static final Set<String> STRIP_KEYS = new HashSet<String>(Arrays.asList(ATTR_CLIENT_ID, ATTR_BROKER_PASSWORD,
-      ATTR_BROKER_USERNAME, ATTR_CLIENT_ID, ATTR_DESTINATION_TYPE, ATTR_DESTINATION, ATTR_RETRY_INTERVAL_MS, ATTR_TIMEOUT_MS));
+  private static final Set<String> STRIP_KEYS = new HashSet<>(Arrays.asList(ATTR_CLIENT_ID, ATTR_BROKER_PASSWORD, ATTR_BROKER_USERNAME,
+      ATTR_CLIENT_ID, ATTR_DESTINATION_TYPE, ATTR_DESTINATION, ATTR_RETRY_INTERVAL_MS, ATTR_TIMEOUT_MS));
 
   private transient ActiveMQConnectionFactory factory;
 
-  private transient Object lock = new Object();
   private transient String brokerURL;
-  
+
   ActiveMqJmsConnectionFactory(Map<String, ?> env, JMXServiceURL url) throws IOException {
     super(env, url);
     try {
@@ -46,8 +45,7 @@ class ActiveMqJmsConnectionFactory extends JmsJmxConnectionFactoryImpl {
       factory.setUserName(jmsEnvironment.get(ATTR_BROKER_USERNAME));
       factory.setPassword(jmsEnvironment.get(ATTR_BROKER_PASSWORD));
       trustAll(factory);
-    }
-    catch (URISyntaxException e) {
+    } catch (URISyntaxException e) {
       throw new IOException(e);
     }
   }
@@ -86,4 +84,5 @@ class ActiveMqJmsConnectionFactory extends JmsJmxConnectionFactoryImpl {
     } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
     }
   }
+
 }

@@ -10,4 +10,5 @@ class TopicServiceExporter extends ExtendedJmsInvokerServiceExporter<Topic> {
   protected Topic createReplyTo(String name, Session session) throws JMSException {
     return session.createTopic(name);
   }
+
 }

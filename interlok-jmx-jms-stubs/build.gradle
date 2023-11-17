@@ -1,13 +1,13 @@
 ext {
-  componentName = 'Interlok JMX/Stubs'
+  componentName = "Interlok JMX/Stubs"
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion = "2.14.2"
+  jacksonVersion = "2.15.3"
   activeMqVersion = "5.17.4"
 }
 
 dependencies {
-  api project(':interlok-jmx-jms-common')
-  implementation ('junit:junit:4.13.2')
+  api project(":interlok-jmx-jms-common")
+  implementation ("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
@@ -25,13 +25,13 @@ dependencies {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 jar {
@@ -45,8 +45,8 @@ jar {
   }
 }
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+  archives javadocJar
+  archives sourcesJar
 }
 
 publishing {

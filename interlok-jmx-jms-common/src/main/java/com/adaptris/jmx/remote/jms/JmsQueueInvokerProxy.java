@@ -13,7 +13,7 @@ import javax.jms.TemporaryQueue;
  */
 final class JmsQueueInvokerProxy extends JmsInvokerProxy<TemporaryQueue> {
 
-  public JmsQueueInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class serviceInterface) {
+  public JmsQueueInvokerProxy(JmsJmxConnectionFactory cf, Destination d, Class<?> serviceInterface) {
     super(cf, d, serviceInterface);
   }
 
@@ -32,4 +32,5 @@ final class JmsQueueInvokerProxy extends JmsInvokerProxy<TemporaryQueue> {
     requestMessage.setJMSReplyTo(tmpDest);
     requestMessage.setStringProperty(ExtendedJmsInvokerServiceExporter.FALLBACK_REPLY_TO_KEY, tmpDest.getQueueName());
   }
+
 }

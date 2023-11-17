@@ -1,12 +1,12 @@
 ext {
   componentName = "Interlok JMX/AMQP"
   componentDesc = "Tunnelling JMX calls using AMQP via Apache QPID"
-  nettyVersion = "4.1.87.Final"
+  nettyVersion = "4.1.100.Final"
 }
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("org.apache.qpid:qpid-jms-client:1.6.0"){
+  implementation ("org.apache.qpid:qpid-jms-client:1.10.0"){
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
@@ -31,13 +31,13 @@ dependencies {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 jar {
@@ -51,8 +51,8 @@ jar {
   }
 }
 artifacts {
-    archives javadocJar
-    archives sourcesJar
+  archives javadocJar
+  archives sourcesJar
 }
 
 publishing {

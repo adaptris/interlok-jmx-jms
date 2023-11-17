@@ -41,9 +41,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Base class for {@link JmsJmxConnectionFactory} instances.
- * 
+ *
  * @author lchan
- * 
+ *
  */
 public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFactory {
 
@@ -60,6 +60,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
         return f.createQueueDestination(ref);
       }
     };
+
     public abstract Destination create(JmsJmxConnectionFactoryImpl f, String ref) throws JMSException;
   }
 
@@ -73,9 +74,9 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   protected transient Object lock = new Object();
 
   private transient JMXServiceURL serviceUrl;
-  private transient Set<Connection> openedConnections = new HashSet<Connection>();
-  private transient Set<TemporaryQueue> tempQueues = new HashSet<TemporaryQueue>();
-  private transient Set<TemporaryTopic> tempTopics = new HashSet<TemporaryTopic>();
+  private transient Set<Connection> openedConnections = new HashSet<>();
+  private transient Set<TemporaryQueue> tempQueues = new HashSet<>();
+  private transient Set<TemporaryTopic> tempTopics = new HashSet<>();
 
   protected JmsJmxConnectionFactoryImpl(Map<String, ?> env, JMXServiceURL url) throws IOException {
     validateProtocol(url.getProtocol());
@@ -91,17 +92,18 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
         jmsEnvironment.put(ATTR_BROKER_USERNAME, credentials[0]);
         jmsEnvironment.put(ATTR_BROKER_PASSWORD, credentials[1]);
       }
-    }
-    catch (URISyntaxException e) {
+    } catch (URISyntaxException e) {
       throw new IOException(e);
     }
   }
 
   /**
    * Validate the protocol
-   * 
-   * @param protocol the protocol from the {@link JMXServiceURL}
-   * @throws MalformedURLException if the protocol is invalid
+   *
+   * @param protocol
+   *          the protocol from the {@link JMXServiceURL}
+   * @throws MalformedURLException
+   *           if the protocol is invalid
    */
   protected void validateProtocol(String protocol) throws MalformedURLException {
     if (!validProtocols().contains(protocol)) {
@@ -126,8 +128,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
       TemporaryTopic t = s.createTemporaryTopic();
       addTemporaryTopic(t);
       destination = t;
-    }
-    else {
+    } else {
       TemporaryQueue q = s.createTemporaryQueue();
       addTemporaryQueue(q);
       destination = q;
@@ -147,35 +148,30 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
           Connection c = null;
           if (useCredentials) {
             c = factory.createConnection(jmsEnvironment.get(ATTR_BROKER_USERNAME), jmsEnvironment.get(ATTR_BROKER_PASSWORD));
-          }
-          else {
+          } else {
             c = factory.createConnection();
           }
           result = new JmxJmsConnection(c);
           successful = true;
-        }
-        catch (JMSException e) {
+        } catch (JMSException e) {
           successful = false;
           if (firstAttempt) {
             log.trace("Failed to make a connection; waiting to retry", e);
             firstAttempt = false;
-          }
-          else {
+          } else {
             log.trace("Failed to make a connection; waiting to retry");
           }
           TimeUnit.MILLISECONDS.sleep(NumberUtils.toLong(jmsEnvironment.get(ATTR_RETRY_INTERVAL_MS), DEFAULT_RETRY_INTERVAL_MS));
         }
-      }
-      while (!successful);
+      } while (!successful);
       log.trace("(Re)connected to {}", loggingString);
-    }
-    catch (InterruptedException e) {
+    } catch (InterruptedException e) {
     }
     return result;
   }
 
   protected Map<String, String> createDefaultEnvironment() {
-    Map<String, String> env = new HashMap<String, String>();
+    Map<String, String> env = new HashMap<>();
     env.put(ATTR_DESTINATION_TYPE, DestinationFactory.Topic.name());
     env.put(ATTR_TIMEOUT_MS, String.valueOf(DEFAULT_TIMEOUT_MS));
     env.put(ATTR_RETRY_INTERVAL_MS, String.valueOf(DEFAULT_RETRY_INTERVAL_MS));
@@ -225,15 +221,15 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   }
 
   @Override
-  public JmsInvokerProxy createInvokerProxy() throws JMSException {
-    JmsInvokerProxy result = JmsInvokerFactory.createInvoker(this, jmsEnvironment.get(ATTR_DESTINATION_TYPE));
+  public JmsInvokerProxy<?> createInvokerProxy() throws JMSException {
+    JmsInvokerProxy<?> result = JmsInvokerFactory.createInvoker(this, jmsEnvironment.get(ATTR_DESTINATION_TYPE));
     result.setReceiveTimeout(Long.parseLong(jmsEnvironment.get(ATTR_TIMEOUT_MS)));
     result.setBeanClassLoader(getClass().getClassLoader());
     return result;
   }
 
   @Override
-  public ExtendedJmsInvokerServiceExporter createServiceExporter() throws JMSException {
+  public ExtendedJmsInvokerServiceExporter<?> createServiceExporter() throws JMSException {
     return JmsInvokerFactory.createServiceExporter(jmsEnvironment.get(ATTR_DESTINATION_TYPE));
   }
 
@@ -264,7 +260,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   }
 
   public static Map<String, String> parseParameters(URI uri) throws URISyntaxException {
-    return uri.getQuery() == null ? Collections.EMPTY_MAP : parseQuery(stripPrefix(uri.getQuery(), "?"));
+    return uri.getQuery() == null ? Collections.emptyMap() : parseQuery(stripPrefix(uri.getQuery(), "?"));
   }
 
   protected static String rebuildQuery(Map<String, String> params, Set<String> ignoreKeys) throws URISyntaxException {
@@ -284,8 +280,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
           first = false;
         }
       }
-    }
-    catch (UnsupportedEncodingException e) {
+    } catch (UnsupportedEncodingException e) {
       throw (URISyntaxException) new URISyntaxException(e.toString(), "Invalid encoding").initCause(e);
     }
     return query.toString();
@@ -293,24 +288,22 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
 
   private static Map<String, String> parseQuery(String queryString) throws URISyntaxException {
     try {
-      Map<String, String> rc = new HashMap<String, String>();
+      Map<String, String> rc = new HashMap<>();
       if (queryString != null) {
         String[] parameters = queryString.split("&");
-        for (int i = 0; i < parameters.length; i++) {
-          int p = parameters[i].indexOf("=");
+        for (String parameter : parameters) {
+          int p = parameter.indexOf("=");
           if (p >= 0) {
-            String name = URLDecoder.decode(parameters[i].substring(0, p), "UTF-8");
-            String value = URLDecoder.decode(parameters[i].substring(p + 1), "UTF-8");
+            String name = URLDecoder.decode(parameter.substring(0, p), "UTF-8");
+            String value = URLDecoder.decode(parameter.substring(p + 1), "UTF-8");
             rc.put(name, value);
-          }
-          else {
-            rc.put(parameters[i], null);
+          } else {
+            rc.put(parameter, null);
           }
         }
       }
       return rc;
-    }
-    catch (UnsupportedEncodingException e) {
+    } catch (UnsupportedEncodingException e) {
       throw (URISyntaxException) new URISyntaxException(e.toString(), "Invalid encoding").initCause(e);
     }
   }
@@ -321,7 +314,6 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   public static URI removeQuery(URI uri) throws URISyntaxException {
     return newURI(uri, null);
   }
-
 
   protected static URI maskUserInfo(URI uri) throws URISyntaxException {
     return new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
@@ -347,7 +339,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
 
   private class NotifyingExceptionListener implements ExceptionListener {
 
-    private Set<ExceptionListener> listeners = new HashSet<ExceptionListener>();
+    private Set<ExceptionListener> listeners = new HashSet<>();
 
     NotifyingExceptionListener() {
     }

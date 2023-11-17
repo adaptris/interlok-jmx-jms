@@ -18,7 +18,6 @@ import com.rabbitmq.jms.admin.RMQConnectionFactory;
 class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
 
   private transient RMQConnectionFactory factory;
-  private transient Object lock = new Object();
   private transient String brokerURL;
 
   RabbitConnectionFactory(Map<String, ?> env, JMXServiceURL url) throws IOException {
@@ -28,8 +27,7 @@ class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
       factory = new RMQConnectionFactory();
       factory.setUri(brokerURL);
 
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new IOException(e);
     }
     // Force it to topic only.
@@ -48,15 +46,13 @@ class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
       if (defaultConnection == null) {
         try {
           defaultConnection = connect(factory, maskUserInfo(new URI(brokerURL)).toString());
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
           throw wrapJmsException(e);
         }
       }
     }
     return defaultConnection;
   }
-
 
   @Override
   public Connection createConnection(String arg0, String arg1) throws JMSException {
@@ -66,12 +62,12 @@ class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
   }
 
   @Override
-  public ExtendedJmsInvokerServiceExporter createServiceExporter() throws JMSException {
+  public ExtendedJmsInvokerServiceExporter<?> createServiceExporter() throws JMSException {
     // if (destinationFactory == DestinationFactory.Queue) {
     // return new QueueServiceExporter();
     // }
     // else {
-      return new TopicServiceExporter();
+    return new TopicServiceExporter();
     // }
   }
 
@@ -88,4 +84,5 @@ class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
   String getBrokerURL() {
     return brokerURL;
   }
+
 }

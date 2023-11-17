@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
@@ -15,13 +16,12 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestName;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public abstract class BaseCase {
   protected transient Logger log = LoggerFactory.getLogger(this.getClass());
@@ -31,32 +31,31 @@ public abstract class BaseCase {
 
   protected ObjectName connectorServerObjectName;
   protected MBeanServer mbeanServer;
-  private Set<ObjectName> toBeUnregistered = new HashSet<ObjectName>();
+  private Set<ObjectName> toBeUnregistered = new HashSet<>();
 
   static {
     PROPERTIES = new Properties();
     try (InputStream in = BaseCase.class.getClassLoader().getResourceAsStream(PROPERTIES_RESOURCE)) {
       PROPERTIES.load(in);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new RuntimeException("cannot locate resource [" + PROPERTIES_RESOURCE + "] on classpath", e);
     }
   }
 
-  @Rule
-  public TestName testName = new TestName();
+  public TestInfo testInfo;
 
   public BaseCase() {
     super();
   }
 
-  @Before
-  public void beforeTests() throws Exception {
+  @BeforeEach
+  public void beforeTests(TestInfo info) throws Exception {
+    testInfo = info;
     mbeanServer = ManagementFactory.getPlatformMBeanServer();
     connectorServerObjectName = createObjectName("JmxJms:name=JmxConnectorServer");
   }
 
-  @After
+  @AfterEach
   public void afterTests() throws Exception {
     for (ObjectName objName : toBeUnregistered) {
       if (mbeanServer.isRegistered(objName)) {
@@ -66,9 +65,8 @@ public abstract class BaseCase {
   }
 
   public String getName() {
-    return testName.getMethodName();
+    return testInfo.getDisplayName();
   }
-
 
   protected SimpleManagementBean createAndRegisterBean(String name, ObjectName objName) throws Exception {
     SimpleManagementBean bean = new SimpleManagementBean(name);
@@ -107,8 +105,8 @@ public abstract class BaseCase {
     return createAndConnect(url, createEnvironment());
   }
 
-  public Map<String, ?> createEnvironment() {
-    Map environment = new HashMap();
+  public Map<String, Object> createEnvironment() {
+    Map<String, Object> environment = new HashMap<>();
     environment.put(JMXConnectorServerFactory.PROTOCOL_PROVIDER_PACKAGES, "com.adaptris.jmx.remote.provider");
     return environment;
   }
@@ -118,8 +116,7 @@ public abstract class BaseCase {
       if (s != null) {
         s.stop();
       }
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
     }
   }
 

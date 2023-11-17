@@ -1,25 +1,28 @@
 package com.adaptris.jmx.remote.provider.amqp;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
+
 import javax.management.JMX;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXServiceURL;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.adaptris.jmx.remote.BaseCase;
 import com.adaptris.jmx.remote.EmbeddedActiveMq;
 import com.adaptris.jmx.remote.SimpleManagementBean;
 import com.adaptris.jmx.remote.SimpleManagementBeanMBean;
 
-@SuppressWarnings("deprecation")
 public class QpidProviderTest extends BaseCase {
 
   public static final String JMX_URL_PREFIX = "service:jmx:amqp:///";
@@ -29,10 +32,10 @@ public class QpidProviderTest extends BaseCase {
   private EmbeddedActiveMq broker;
   private String jmxUrlBase;
 
-  public QpidProviderTest() {}
+  public QpidProviderTest() {
+  }
 
-
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     broker = new EmbeddedActiveMq();
     broker.start();
@@ -40,11 +43,10 @@ public class QpidProviderTest extends BaseCase {
 
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws Exception {
     broker.destroy();
   }
-
 
   @Test
   public void testMBean_UseQueues() throws Exception {
@@ -118,4 +120,5 @@ public class QpidProviderTest extends BaseCase {
       fact.destroy();
     }
   }
+
 }

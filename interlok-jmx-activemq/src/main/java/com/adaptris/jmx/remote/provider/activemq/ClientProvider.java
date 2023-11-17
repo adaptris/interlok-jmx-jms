@@ -15,4 +15,5 @@ public class ClientProvider implements JMXConnectorProvider {
   public JMXConnector newJMXConnector(JMXServiceURL url, Map<String, ?> environment) throws IOException {
     return new JmsJmxConnectorClient(url, environment, new ActiveMqJmsConnectionFactory(environment, url));
   }
+
 }
