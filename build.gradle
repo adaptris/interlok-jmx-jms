@@ -171,7 +171,7 @@ subprojects { subproject ->
     umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.2")
     testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
 
