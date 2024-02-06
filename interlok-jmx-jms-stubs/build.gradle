@@ -1,13 +1,13 @@
 ext {
   componentName = "Interlok JMX/Stubs"
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion = "2.15.3"
-  activeMqVersion = "5.17.4"
+  jacksonVersion = "2.16.1"
+  activeMqVersion = "5.17.6"
 }
 
 dependencies {
   api project(":interlok-jmx-jms-common")
-  implementation ("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+  implementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive

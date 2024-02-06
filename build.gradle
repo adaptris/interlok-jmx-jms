@@ -2,9 +2,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id "com.github.spotbugs" version "5.2.1" apply false
+  id "com.github.spotbugs" version "6.0.6" apply false
   id "org.sonarqube" version "4.4.1.3373"
-  id "org.owasp.dependencycheck" version "8.4.2" apply false
+  id "org.owasp.dependencycheck" version "9.0.8" apply false
 }
 
 ext {
@@ -22,7 +22,7 @@ ext {
 
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.27'
-  slf4jVersion = '2.0.9'
+  slf4jVersion = '2.0.11'
   mockitoVersion = '5.2.0'
 }
 
@@ -156,7 +156,7 @@ subprojects { subproject ->
   dependencies {
     api ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     api ("commons-lang:commons-lang:2.6")
-    api ("org.apache.commons:commons-lang3:3.13.0")
+    api ("org.apache.commons:commons-lang3:3.14.0")
     api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
     api ("org.springframework:spring-jms:$springVersion")
     api ("org.springframework:spring-beans:$springVersion") { transitive=false}
@@ -164,14 +164,14 @@ subprojects { subproject ->
     api ("org.springframework:spring-context:$springVersion") { transitive=false}
     api ("org.springframework:spring-aop:$springVersion") { transitive=false}
     api ("com.thoughtworks.xstream:xstream:1.4.20")
-    api ("commons-io:commons-io:2.15.0")
+    api ("commons-io:commons-io:2.15.1")
     implementation ("aopalliance:aopalliance:1.0")
     implementation ("org.slf4j:slf4j-api:$slf4jVersion")
 
     umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
     testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
 
@@ -272,8 +272,8 @@ subprojects { subproject ->
   }
 
   spotbugsMain {
-    effort = "max"
-    reportLevel = "high"
+    effort = com.github.spotbugs.snom.Effort.valueOf("MAX")
+    reportLevel = com.github.spotbugs.snom.Confidence.valueOf("HIGH")
     reports {
       xml {
         required.set(false)
