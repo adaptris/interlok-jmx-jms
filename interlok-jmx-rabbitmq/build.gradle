@@ -58,6 +58,7 @@ publishing {
         properties.appendNode("license", "false")
         properties.appendNode("readme", "https://github.com/adaptris/interlok-jmx-jms/raw/develop/README.md")
         properties.appendNode("repository", "https://github.com/adaptris/interlok-jmx-jms")
+        properties.appendNode("deprecated", "This component has been deprecated with no replacement and will be removed in a future version")
       }
     }
   }
