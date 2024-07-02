@@ -2,9 +2,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id "com.github.spotbugs" version "6.0.6" apply false
+  id "com.github.spotbugs" version "6.0.14" apply false
   id "org.sonarqube" version "4.4.1.3373"
-  id "org.owasp.dependencycheck" version "9.0.8" apply false
+  id "org.owasp.dependencycheck" version "9.0.10" apply false
 }
 
 ext {
@@ -21,8 +21,8 @@ ext {
   offlineJavadocPackageDir = new File(project.buildDir, "offline-javadoc-packages")
 
   organizationName = "Adaptris Ltd"
-  springVersion = '5.3.27'
-  slf4jVersion = '2.0.11'
+  springVersion = '5.3.33'
+  slf4jVersion = '2.0.13'
   mockitoVersion = '5.2.0'
 }
 
@@ -164,14 +164,14 @@ subprojects { subproject ->
     api ("org.springframework:spring-context:$springVersion") { transitive=false}
     api ("org.springframework:spring-aop:$springVersion") { transitive=false}
     api ("com.thoughtworks.xstream:xstream:1.4.20")
-    api ("commons-io:commons-io:2.15.1")
+    api ("commons-io:commons-io:2.16.1")
     implementation ("aopalliance:aopalliance:1.0")
     implementation ("org.slf4j:slf4j-api:$slf4jVersion")
 
     umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.2")
     testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
 

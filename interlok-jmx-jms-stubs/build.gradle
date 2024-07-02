@@ -1,13 +1,13 @@
 ext {
   componentName = "Interlok JMX/Stubs"
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion = "2.16.1"
+  jacksonVersion = "2.17.1"
   activeMqVersion = "5.17.6"
 }
 
 dependencies {
   api project(":interlok-jmx-jms-common")
-  implementation ("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+  implementation ("org.junit.jupiter:junit-jupiter-engine:5.10.2")
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
@@ -67,6 +67,7 @@ publishing {
         properties.appendNode("license", "false")
         properties.appendNode("developerOnly", "true")
         properties.appendNode("repository", "https://github.com/adaptris/interlok-jmx-jms")
+        properties.appendNode("deprecated", "This component has been deprecated with no replacement and will be removed in a future version")
       }
     }
   }

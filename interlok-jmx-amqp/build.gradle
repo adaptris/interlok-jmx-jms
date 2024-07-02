@@ -1,7 +1,7 @@
 ext {
   componentName = "Interlok JMX/AMQP"
   componentDesc = "Tunnelling JMX calls using AMQP via Apache QPID"
-  nettyVersion = "4.1.104.Final"
+  nettyVersion = "4.1.109.Final"
 }
 
 dependencies {
@@ -73,6 +73,7 @@ publishing {
         properties.appendNode("license", "false")
         properties.appendNode("readme", "https://github.com/adaptris/interlok-jmx-jms/raw/develop/README.md")
         properties.appendNode("repository", "https://github.com/adaptris/interlok-jmx-jms")
+        properties.appendNode("deprecated", "This component has been deprecated with no replacement and will be removed in a future version")
       }
     }
   }
