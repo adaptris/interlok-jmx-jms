@@ -294,6 +294,7 @@ subprojects { subproject ->
     failBuildOnCVSS = 7.0
     nvd {
       apiKey = System.getenv("NVD_API_KEY")
+      delay=project.findProperty('dependencyCheckNvdDelay')
     }
     analyzers {
       assemblyEnabled=false
