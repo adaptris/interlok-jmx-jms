@@ -2,9 +2,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
 plugins {
-  id "com.github.spotbugs" version "6.0.14" apply false
+  id "com.github.spotbugs" version "6.0.21" apply false
   id "org.sonarqube" version "4.4.1.3373"
-  id "org.owasp.dependencycheck" version "9.0.10" apply false
+  id "org.owasp.dependencycheck" version "10.0.3" apply false
 }
 
 ext {
@@ -22,7 +22,7 @@ ext {
 
   organizationName = "Adaptris Ltd"
   springVersion = '5.3.33'
-  slf4jVersion = '2.0.13'
+  slf4jVersion = '2.0.16'
   mockitoVersion = '5.2.0'
 }
 
@@ -156,7 +156,7 @@ subprojects { subproject ->
   dependencies {
     api ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     api ("commons-lang:commons-lang:2.6")
-    api ("org.apache.commons:commons-lang3:3.14.0")
+    api ("org.apache.commons:commons-lang3:3.17.0")
     api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
     api ("org.springframework:spring-jms:$springVersion")
     api ("org.springframework:spring-beans:$springVersion") { transitive=false}
@@ -171,7 +171,7 @@ subprojects { subproject ->
     umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.11.0")
     testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
     testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
 
@@ -292,6 +292,11 @@ subprojects { subproject ->
     formats = [ "HTML", "JUNIT" ]
     junitFailOnCVSS = 7.0
     failBuildOnCVSS = 7.0
+    nvd {
+      apiKey = System.getenv("NVD_API_KEY")
+      delay=project.findProperty("dependencyCheckNvdDelay")
+      datafeedUrl=project.findProperty("dependencyCheckNvdDatafeedUrl")
+    }
     analyzers {
       assemblyEnabled=false
       knownExploitedURL=project.findProperty('dependencyCheckKnownExploitedURL')
