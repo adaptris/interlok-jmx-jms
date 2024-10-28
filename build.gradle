@@ -155,7 +155,7 @@ subprojects { subproject ->
     implementation ("aopalliance:aopalliance:1.0")
     implementation ("org.slf4j:slf4j-api:$slf4jVersion")
 
-    umlDoclet("nl.talsmasoftware:umldoclet:2.2.0")
+    umlDoclet("nl.talsmasoftware:umldoclet:2.2.1")
     annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
 
     testImplementation ('junit:junit:4.13.2')
