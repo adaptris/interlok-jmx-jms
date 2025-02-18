@@ -1,7 +1,7 @@
 ext {
   componentName = "Interlok JMX/AMQP"
   componentDesc = "Tunnelling JMX calls using AMQP via Apache QPID"
-  nettyVersion = "4.1.112.Final"
+  nettyVersion = "4.1.116.Final"
 }
 
 dependencies {
