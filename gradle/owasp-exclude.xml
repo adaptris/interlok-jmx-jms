@@ -53,4 +53,14 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq\-broker@.*$</packageUrl>
     <vulnerabilityName>CVE-2015-3208</vulnerabilityName>
   </suppress>
+  <suppress>
+     <notes><![CDATA[
+	 This project is not affected as it't not using the vulnerable classes. 
+	 https://nvd.nist.gov/vuln/detail/CVE-2024-38820#range-16081094
+     files: spring-aop-5.3.39.jar, spring-beans-5.3.39.jar, spring-context-5.3.39.jar, spring-core-5.3.39.jar, spring-expression-5.3.39.jar, spring-jcl-5.3.39.jar
+     ]]></notes>
+     <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*$</packageUrl>
+     <cve>CVE-2024-38820</cve>
+	 <cve>CVE-2025-22233</cve>
+  </suppress>
 </suppressions>
