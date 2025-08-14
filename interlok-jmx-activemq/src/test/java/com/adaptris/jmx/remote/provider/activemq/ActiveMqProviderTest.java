@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 import javax.management.JMX;
 import javax.management.MBeanServerConnection;
 import javax.management.Notification;

@@ -11,8 +11,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
+import jakarta.jms.Connection;
+import jakarta.jms.JMSContext;
+import jakarta.jms.JMSException;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -70,6 +71,26 @@ class QpidConnectionFactory extends JmsJmxConnectionFactoryImpl {
     Connection c = factory.createConnection(arg0, arg1);
     addOpenedConnection(c);
     return c;
+  }
+
+  @Override
+  public JMSContext createContext() {
+    return factory.createContext();
+  }
+
+  @Override
+  public JMSContext createContext(String userName, String password) {
+    return factory.createContext(userName, password);
+  }
+
+  @Override
+  public JMSContext createContext(String userName, String password, int sessionMode) {
+    return factory.createContext(userName, password, sessionMode);
+  }
+
+  @Override
+  public JMSContext createContext(int sessionMode) {
+    return factory.createContext();
   }
 
   // @Override

@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.Connection;
-import javax.jms.Destination;
-import javax.jms.ExceptionListener;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.Connection;
+import jakarta.jms.Destination;
+import jakarta.jms.ExceptionListener;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
@@ -119,7 +119,9 @@ class JmsMBeanServerConnectionListener extends MBeanServerConnectionProxy implem
   public void onException(JMSException arg0) {
     try {
       removeAllListeners();
-      initConnection();
+      if (!factory.isDestroyed()) {
+        initConnection();
+      }
     }
     catch (JMSException e) {
       throw new RuntimeException(e);

@@ -1,6 +1,6 @@
 package com.adaptris.jmx.remote.jms;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.apache.commons.lang.WordUtils;
 

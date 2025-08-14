@@ -1,14 +1,14 @@
 ext {
   componentName = "Interlok JMX/Solace"
   componentDesc = "Tunnelling JMX calls via Solace"
-  solaceVersion = '10.27.0'
+  solaceVersion = '10.27.3'
 }
 
 dependencies {
   api project(':interlok-jmx-jms-common')
   implementation ("com.solacesystems:sol-common:$solaceVersion")
   implementation ("com.solacesystems:sol-jcsmp:$solaceVersion")
-  implementation ("com.solacesystems:sol-jms:$solaceVersion")
+  implementation ("com.solacesystems:sol-jms-jakarta:$solaceVersion")
 
   testImplementation project(':interlok-jmx-jms-stubs')
 
