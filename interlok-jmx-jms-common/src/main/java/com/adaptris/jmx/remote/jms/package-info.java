@@ -12,13 +12,13 @@
  * {@link javax.management.remote.JMXConnectorServer#getConnectionIds()} and
  * {@link javax.management.remote.JMXConnector#getConnectionId()}. It uses a JMS provider to provide connectivity so clients aren't
  * directly connected to our {@link com.adaptris.jmx.remote.jms.JmsJmxConnectorServer} implementation, requests just appear on a
- * given {@link javax.jms.Destination} and the class attempts to service them. As a result, you will find that the
+ * given {@link jakarta.jms.Destination} and the class attempts to service them. As a result, you will find that the
  * {@link javax.management.remote.JMXConnectorServer#getConnectionIds()} will return an empty string, and although
  * {@link javax.management.remote.JMXConnector#getConnectionId()} will return a conventional connection ID, it is only consistent
  * for the lifetime of the underlying JMS connection and cannot be cross-referenced with anything.
  * </p>
  * <p>
- * Communication via both {@link javax.jms.Queue} and {@link javax.jms.Topic} are supported unless other specified in their
+ * Communication via both {@link jakarta.jms.Queue} and {@link jakarta.jms.Topic} are supported unless other specified in their
  * respective implementations, each request will create a temporary destination matching the target destination type.
  * {@link javax.management.Notification Notifications} are received and handled via a separate temporary destination.
  * </p>

@@ -1,6 +1,6 @@
 package com.adaptris.jmx.remote.jms;
 
-import javax.jms.Destination;
+import jakarta.jms.Destination;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 

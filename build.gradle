@@ -8,8 +8,8 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.0-SNAPSHOT'
-  releaseVersion = project.findProperty('releaseVersion') ?: '5.0-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.1-SNAPSHOT'
+  releaseVersion = project.findProperty('releaseVersion') ?: '5.1-SNAPSHOT'
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -21,7 +21,7 @@ ext {
   offlineJavadocPackageDir = new File(project.buildDir, "offline-javadoc-packages")
 
   organizationName = "Adaptris Ltd"
-  springVersion = '5.3.39'
+  springVersion = '6.2.9'
   slf4jVersion = '2.0.17'
   mockitoVersion = '5.2.0'
 }
@@ -157,7 +157,8 @@ subprojects { subproject ->
     api ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
     api ("commons-lang:commons-lang:2.6")
     api ("org.apache.commons:commons-lang3:3.18.0")
-    api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
+    api ("jakarta.jms:jakarta.jms-api:3.1.0")
+    api ("org.springframework:spring-remoting:2.0.8")
     api ("org.springframework:spring-jms:$springVersion")
     api ("org.springframework:spring-beans:$springVersion") { transitive=false}
     api ("org.springframework:spring-core:$springVersion") { transitive=false}

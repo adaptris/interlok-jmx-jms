@@ -2,14 +2,14 @@ package com.adaptris.jmx.remote.jms;
 
 import static com.adaptris.jmx.remote.jms.JmsHelper.deleteQuietly;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import javax.jms.TemporaryTopic;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
+import jakarta.jms.TemporaryTopic;
 
 /**
- * Concrete implementation of JmsInvokerProxy that uses {@link javax.jms.Topic} and {@link TemporaryTopic}.
+ * Concrete implementation of JmsInvokerProxy that uses {@link jakarta.jms.Topic} and {@link TemporaryTopic}.
  *
  */
 final class JmsTopicInvokerProxy extends JmsInvokerProxy<TemporaryTopic> {

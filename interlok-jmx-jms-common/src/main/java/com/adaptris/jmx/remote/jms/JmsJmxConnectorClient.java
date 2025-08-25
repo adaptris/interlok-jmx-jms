@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanServerConnection;
 import javax.management.NotificationBroadcasterSupport;

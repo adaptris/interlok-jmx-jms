@@ -2,11 +2,11 @@ package com.adaptris.jmx.remote.jms;
 
 import static com.adaptris.jmx.remote.jms.JmsHelper.closeQuietly;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.ObjectMessage;
+import jakarta.jms.Session;
 import javax.management.Notification;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;

@@ -1,8 +1,8 @@
 package com.adaptris.jmx.remote.jms;
 
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.jms.Topic;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
+import jakarta.jms.Topic;
 
 class TopicServiceExporter extends ExtendedJmsInvokerServiceExporter<Topic> {
 

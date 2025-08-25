@@ -2,17 +2,20 @@ package com.adaptris.jmx.remote.jms;
 
 import static com.adaptris.jmx.remote.jms.JmsHelper.closeQuietly;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageFormatException;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
+import jakarta.jms.Connection;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageFormatException;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Session;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -23,15 +26,9 @@ import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.jms.remoting.JmsInvokerClientInterceptor;
-import org.springframework.jms.remoting.JmsInvokerProxyFactoryBean;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.remoting.RemoteAccessException;
-import org.springframework.remoting.RemoteInvocationFailureException;
-import org.springframework.remoting.support.DefaultRemoteInvocationFactory;
-import org.springframework.remoting.support.RemoteInvocation;
-import org.springframework.remoting.support.RemoteInvocationFactory;
-import org.springframework.remoting.support.RemoteInvocationResult;
+import org.springframework.remoting.support.*;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -42,9 +39,10 @@ import org.springframework.util.ClassUtils;
  * the JMS provider as communication infrastructure.
  * </p>
  * <p>
- * This class is effectively a copy of {@link JmsInvokerProxyFactoryBean} and {@link JmsInvokerClientInterceptor} with the Queue support
- * abstracted as JMS1.1 destination. Concrete sub-classes will allow you to optionally use a {@link javax.jms.Queue} or
- * {@link javax.jms.Topic} as your JMS delivery mechanism.
+ * This class is effectively a copy of <code>org.springframework.jms.remoting.JmsInvokerProxyFactoryBean</code> and
+ * <code>org.springframework.jms.remoting.JmsInvokerClientInterceptor</code> (both deprecated and removed as of Spring 6)
+ * with the Queue support abstracted as JMS1.1 destination. Concrete sub-classes will allow you to optionally use a
+ * {@link jakarta.jms.Queue} or {@link jakarta.jms.Topic} as your JMS delivery mechanism.
  * </p>
  */
 // Yes it's a copy of JmsInvokerProxyFactoryBean + JmsInvokerClientInterceptor from Spring-JMS; but that uses QUEUES, not TOPICS...
@@ -81,8 +79,8 @@ BeanClassLoaderAware {
    * Set the timeout to use for receiving the response message for a request (in milliseconds).
    *
    * @param receiveTimeout the timeout in milliseconds (default is 60seconds).
-   * @see javax.jms.MessageConsumer#receive(long)
-   * @see javax.jms.MessageConsumer#receive()
+   * @see jakarta.jms.MessageConsumer#receive(long)
+   * @see jakarta.jms.MessageConsumer#receive()
    */
   public void setReceiveTimeout(long receiveTimeout) {
     this.receiveTimeout = receiveTimeout;
@@ -126,12 +124,12 @@ BeanClassLoaderAware {
       return recreateRemoteInvocationResult(result);
     }
     catch (Throwable ex) {
-      if (result.hasInvocationTargetException()) {
+      if (result.hasException() && result.getException() instanceof InvocationTargetException) {
         throw ex;
       }
       else {
         throw new RemoteInvocationFailureException("Invocation of method [" + methodInvocation.getMethod()
-        + "] failed in JMS invoker remote service at queue [" + jmsDestination + "]", ex);
+                + "] failed in JMS invoker remote service at queue [" + jmsDestination + "]", ex);
       }
     }
   }
@@ -226,7 +224,42 @@ BeanClassLoaderAware {
   }
 
   protected Object recreateRemoteInvocationResult(RemoteInvocationResult result) throws Throwable {
-    return result.recreate();
+    try {
+      return result.recreate();
+    } catch (NoClassDefFoundError ex) {
+      if (ex.getMessage().contains("org/springframework/core/JdkVersion")) {
+        return recreate(result);
+      }
+      throw ex;
+    }
+  }
+
+  private Object recreate(RemoteInvocationResult result) throws Throwable {
+    if (result.getException() != null) {
+      Throwable exToThrow = result.getException();
+      if (result.getException() instanceof InvocationTargetException) {
+        exToThrow = ((InvocationTargetException)result.getException()).getTargetException();
+      }
+      fillInClientStackTraceIfPossible(exToThrow);
+      throw exToThrow;
+    } else {
+      return result.getValue();
+    }
+  }
+
+  private static void fillInClientStackTraceIfPossible(Throwable ex) {
+    StackTraceElement[] clientStack = (new Throwable()).getStackTrace();
+    Set visitedExceptions = new HashSet();
+
+    for(Throwable exToUpdate = ex; exToUpdate != null && !visitedExceptions.contains(exToUpdate); exToUpdate = exToUpdate.getCause()) {
+      StackTraceElement[] serverStack = exToUpdate.getStackTrace();
+      StackTraceElement[] combinedStack = new StackTraceElement[serverStack.length + clientStack.length];
+      System.arraycopy(serverStack, 0, combinedStack, 0, serverStack.length);
+      System.arraycopy(clientStack, 0, combinedStack, serverStack.length, clientStack.length);
+      exToUpdate.setStackTrace(combinedStack);
+      visitedExceptions.add(exToUpdate);
+    }
+
   }
 
   protected RemoteAccessException convertJmsInvokerAccessException(JMSException ex) {

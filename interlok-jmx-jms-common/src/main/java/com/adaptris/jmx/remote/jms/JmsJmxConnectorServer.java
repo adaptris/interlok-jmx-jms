@@ -21,7 +21,7 @@ import org.springframework.jms.listener.SimpleMessageListenerContainer;
  * Implementation of {@link JMXConnectorServer} that provides JMX connectivity via JMS.
  * <p>
  * As this implementation uses a JMS Provider to provide connectivity, clients aren't directly connected to this server; requests
- * automatically appear on the given {@link javax.jms.Destination} that this is registered against. As a result, you will find that the
+ * automatically appear on the given {@link jakarta.jms.Destination} that this is registered against. As a result, you will find that the
  * standard {@link #getConnectionIds()} may return you an empty array as the corresponding
  * {@link #connectionClosed(String, String, Object)}, {@link #connectionOpened(String, String, Object)},
  * {@link #connectionFailed(String, String, Object)} methods are never called.

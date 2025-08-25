@@ -1,9 +1,9 @@
 package com.adaptris.jmx.remote.jms;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Session;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.Session;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXServiceURL;
@@ -41,14 +41,14 @@ public interface JmsJmxConnectionFactory extends ConnectionFactory {
    */
   String ATTR_TIMEOUT_MS = "jmx.timeout";
   /**
-   * Key in the initial attributes that specifies the clientid to be associated the underlying {@link javax.jms.ConnectionFactory}.
+   * Key in the initial attributes that specifies the clientid to be associated the underlying {@link jakarta.jms.ConnectionFactory}.
    * <p>
    * The value in the initial attributes can by overriden by specifying this as part of the query portion of the {@link JMXServiceURL}.
    * </p>
    */
   String ATTR_CLIENT_ID = "jmx.clientid";
   /**
-   * Key in the initial attributes that specifies the broker user to be associated the underlying {@link javax.jms.ConnectionFactory} .
+   * Key in the initial attributes that specifies the broker user to be associated the underlying {@link jakarta.jms.ConnectionFactory} .
    * <p>
    * The value in the initial attributes can by overriden by specifying this as part of the query portion of the {@link JMXServiceURL}.
    * Where appropriate then the values stored against the standard key {@link JMXConnector#CREDENTIALS} will supersede both this key and any
@@ -57,7 +57,7 @@ public interface JmsJmxConnectionFactory extends ConnectionFactory {
    */
   String ATTR_BROKER_USERNAME = "jmx.brokerUser";
   /**
-   * Key in the initial attributes that specifies the broker password to be associated the underlying {@link javax.jms.ConnectionFactory} .
+   * Key in the initial attributes that specifies the broker password to be associated the underlying {@link jakarta.jms.ConnectionFactory} .
    * <p>
    * The value in the initial attributes can by overriden by specifying this as part of the query portion of the {@link JMXServiceURL}.
    * Where appropriate then the values stored against the standard key {@link JMXConnector#CREDENTIALS} will supersede both this key and any
@@ -119,7 +119,7 @@ public interface JmsJmxConnectionFactory extends ConnectionFactory {
    *
    * @param s
    *          the session
-   * @return a {@link javax.jms.TemporaryQueue} or {@link javax.jms.TemporaryTopic}.
+   * @return a {@link jakarta.jms.TemporaryQueue} or {@link jakarta.jms.TemporaryTopic}.
    * @throws JMSException
    *           if there was an error creating the temporary destination.
    */
@@ -130,4 +130,6 @@ public interface JmsJmxConnectionFactory extends ConnectionFactory {
    *
    */
   void destroy();
+
+  boolean isDestroyed();
 }

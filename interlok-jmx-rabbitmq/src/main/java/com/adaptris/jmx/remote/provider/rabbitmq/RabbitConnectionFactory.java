@@ -7,8 +7,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
+import jakarta.jms.Connection;
+import jakarta.jms.JMSContext;
+import jakarta.jms.JMSException;
 import javax.management.remote.JMXServiceURL;
 
 import com.adaptris.jmx.remote.jms.ExtendedJmsInvokerServiceExporter;
@@ -59,6 +60,26 @@ class RabbitConnectionFactory extends JmsJmxConnectionFactoryImpl {
     Connection c = factory.createConnection(arg0, arg1);
     addOpenedConnection(c);
     return c;
+  }
+
+  @Override
+  public JMSContext createContext() {
+    return factory.createContext();
+  }
+
+  @Override
+  public JMSContext createContext(String userName, String password) {
+    return factory.createContext(userName, password);
+  }
+
+  @Override
+  public JMSContext createContext(String userName, String password, int sessionMode) {
+    return factory.createContext(userName, password, sessionMode);
+  }
+
+  @Override
+  public JMSContext createContext(int sessionMode) {
+    return factory.createContext(sessionMode);
   }
 
   @Override

@@ -19,25 +19,26 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionConsumer;
-import javax.jms.ConnectionFactory;
-import javax.jms.ConnectionMetaData;
-import javax.jms.Destination;
-import javax.jms.ExceptionListener;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.ServerSessionPool;
-import javax.jms.Session;
-import javax.jms.TemporaryQueue;
-import javax.jms.TemporaryTopic;
-import javax.jms.Topic;
+import jakarta.jms.Connection;
+import jakarta.jms.ConnectionConsumer;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.ConnectionMetaData;
+import jakarta.jms.Destination;
+import jakarta.jms.ExceptionListener;
+import jakarta.jms.JMSException;
+import jakarta.jms.Queue;
+import jakarta.jms.ServerSessionPool;
+import jakarta.jms.Session;
+import jakarta.jms.TemporaryQueue;
+import jakarta.jms.TemporaryTopic;
+import jakarta.jms.Topic;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jms.listener.SimpleMessageListenerContainer;
 
 /**
  * Base class for {@link JmsJmxConnectionFactory} instances.
@@ -77,6 +78,8 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   private transient Set<Connection> openedConnections = new HashSet<>();
   private transient Set<TemporaryQueue> tempQueues = new HashSet<>();
   private transient Set<TemporaryTopic> tempTopics = new HashSet<>();
+
+  private transient boolean destroyed = false;
 
   protected JmsJmxConnectionFactoryImpl(Map<String, ?> env, JMXServiceURL url) throws IOException {
     validateProtocol(url.getProtocol());
@@ -221,6 +224,11 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
   }
 
   @Override
+  public boolean isDestroyed() {
+    return destroyed;
+  }
+
+  @Override
   public JmsInvokerProxy<?> createInvokerProxy() throws JMSException {
     JmsInvokerProxy<?> result = JmsInvokerFactory.createInvoker(this, jmsEnvironment.get(ATTR_DESTINATION_TYPE));
     result.setReceiveTimeout(Long.parseLong(jmsEnvironment.get(ATTR_TIMEOUT_MS)));
@@ -350,7 +358,9 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
       destroy();
       // Now notify all our children.
       for (ExceptionListener el : listeners) {
-        el.onException(arg0);
+        if ((el instanceof SimpleMessageListenerContainer sml && sml.isActive()) || !(el instanceof SimpleMessageListenerContainer)) {
+          el.onException(arg0);
+        }
       }
       listeners.clear();
     }
@@ -374,6 +384,7 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
     public void destroy() {
       closeQuietly(baseSession);
       closeQuietly(connection, true);
+      destroyed = true;
     }
 
     public Session currentSession() {
@@ -396,6 +407,26 @@ public abstract class JmsJmxConnectionFactoryImpl implements JmsJmxConnectionFac
     public ConnectionConsumer createDurableConnectionConsumer(Topic arg0, String arg1, String arg2, ServerSessionPool arg3, int arg4)
         throws JMSException {
       return connection.createDurableConnectionConsumer(arg0, arg1, arg2, arg3, arg4);
+    }
+
+    @Override
+    public ConnectionConsumer createSharedDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+      return connection.createSharedDurableConnectionConsumer(topic, subscriptionName, messageSelector, sessionPool, maxMessages);
+    }
+
+    @Override
+    public Session createSession(int sessionMode) throws JMSException {
+      return connection.createSession(sessionMode);
+    }
+
+    @Override
+    public Session createSession() throws JMSException {
+      return connection.createSession();
+    }
+
+    @Override
+    public ConnectionConsumer createSharedConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+      return connection.createSharedConnectionConsumer(topic, subscriptionName, messageSelector, sessionPool, maxMessages);
     }
 
     @Override
