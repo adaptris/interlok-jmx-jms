@@ -63,4 +63,35 @@
      <cve>CVE-2024-38820</cve>
 	 <cve>CVE-2025-22233</cve>
   </suppress>
-</suppressions>
+  <suppress>
+     <notes><![CDATA[
+     Spring Framework remains pinned to 5.3.39 on this Java 17 line. These newly reported CVEs do not have
+     an in-line remediation available within the currently supported Spring 5.3.x baseline for this project.
+     ]]></notes>
+     <packageUrl regex="true">^pkg:maven/org\.springframework/spring.*@5\.3\.39$</packageUrl>
+     <cve>CVE-2026-22740</cve>
+     <cve>CVE-2026-22737</cve>
+     <cve>CVE-2026-22745</cve>
+     <cve>CVE-2026-22741</cve>
+     <cve>CVE-2026-22735</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      file name: spring-boot-loader-2.7.18.jar
+      We are pinned to Spring Boot 2.7.x on Java 17. There is no newer 2.7.x release in Maven Central,
+      so these CVEs cannot be remediated by an in-line version bump at the moment.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-loader@2\.7\.18$</packageUrl>
+    <cve>CVE-2026-40972</cve>
+    <cve>CVE-2026-40973</cve>
+    <cve>CVE-2026-40974</cve>
+    <cve>CVE-2026-40975</cve>
+    <cve>CVE-2026-40977</cve>
+  </suppress>  <suppress>
+    <notes><![CDATA[
+      Jetty 10.0.26 is the newest Jetty 10 release available in Maven Central. Remediation for this CVE
+      requires moving off the Jetty 10 line, which is outside the current Java 17 / Jetty 10 constraints.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty(\.http2|\.websocket)?/.+@10\.0\.26$</packageUrl>
+    <cve>CVE-2026-2332</cve>
+  </suppress></suppressions>

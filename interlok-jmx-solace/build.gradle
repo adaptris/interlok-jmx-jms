@@ -1,14 +1,35 @@
 ext {
   componentName = "Interlok JMX/Solace"
   componentDesc = "Tunnelling JMX calls via Solace"
-  solaceVersion = '10.29.0'
+  nettyVersion = '4.2.13.Final'
+  solaceVersion = '10.30.0'
 }
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("com.solacesystems:sol-common:$solaceVersion")
-  implementation ("com.solacesystems:sol-jcsmp:$solaceVersion")
-  implementation ("com.solacesystems:sol-jms:$solaceVersion")
+  implementation ("com.solacesystems:sol-common:$solaceVersion") {
+    exclude group: "io.netty"
+  }
+  implementation ("com.solacesystems:sol-jcsmp:$solaceVersion") {
+    exclude group: "io.netty"
+  }
+  implementation ("com.solacesystems:sol-jms:$solaceVersion") {
+    exclude group: "io.netty"
+  }
+
+  implementation ("io.netty:netty-buffer:$nettyVersion")
+  implementation ("io.netty:netty-common:$nettyVersion")
+  implementation ("io.netty:netty-handler:$nettyVersion")
+  implementation ("io.netty:netty-transport:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-epoll:$nettyVersion")
+  implementation ("io.netty:netty-transport-native-unix-common:$nettyVersion")
+  implementation ("io.netty:netty-codec:$nettyVersion")
+  implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("io.netty:netty-codec-base:$nettyVersion")
+  implementation ("io.netty:netty-codec-compression:$nettyVersion")
+  implementation ("io.netty:netty-codec-socks:$nettyVersion")
+  implementation ("io.netty:netty-handler-proxy:$nettyVersion")
+  implementation ("io.netty:netty-resolver:$nettyVersion")
 
   testImplementation project(':interlok-jmx-jms-stubs')
 
