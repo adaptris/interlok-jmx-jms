@@ -4,10 +4,19 @@ ext {
   activeMqVersion = '5.19.6'
 }
 
+configurations {
+  testRuntimeClasspath {
+    exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
+  }
+}
+
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("org.apache.activemq:activemq-client:$activeMqVersion")
+  implementation ("org.apache.activemq:activemq-client:$activeMqVersion") {
+    exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
+  }
   testImplementation project(':interlok-jmx-jms-stubs')
+  testRuntimeOnly ("jakarta.jms:jakarta.jms-api:2.0.3")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
