@@ -3,7 +3,7 @@ ext {
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
   jacksonVersion = "2.21.3"
   activeMqVersion = "5.19.6"
-  nettyVersion = "4.2.13.Final"
+  nettyVersion = "4.2.14.Final"
 }
 
 dependencies {
