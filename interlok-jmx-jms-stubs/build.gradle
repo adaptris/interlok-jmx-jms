@@ -20,7 +20,7 @@ dependencies {
   implementation ("org.apache.activemq:activemq-jaas:$activeMqVersion")
   implementation ("org.apache.activemq:activemq-kahadb-store:$activeMqVersion")
   implementation ("org.apache.activemq:activemq-amqp:$activeMqVersion")
-  implementation ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
+  implementation ("org.apache.activemq.protobuf:activemq-protobuf:6.3.0")
   implementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
 }
 
