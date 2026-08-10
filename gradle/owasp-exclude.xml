@@ -126,7 +126,7 @@
       activemq-client 5.19.6 is used by interlok-jmx-activemq. No newer 5.19.x release is available
       that resolves these CVEs. Review when a patched release becomes available.
     ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq-client@5\.19\.6$</packageUrl>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.activemq/activemq.*@5\.19\.6$</packageUrl>
     <cve>CVE-2026-42253</cve>
     <cve>CVE-2026-42588</cve>
     <cve>CVE-2026-45505</cve>
