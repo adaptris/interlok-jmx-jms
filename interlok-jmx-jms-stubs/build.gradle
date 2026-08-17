@@ -23,7 +23,7 @@ dependencies {
   implementation ("org.apache.activemq:activemq-amqp:$activeMqVersion") {
     exclude group: "io.netty"
   }
-  implementation ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
+  implementation ("org.apache.activemq.protobuf:activemq-protobuf:6.3.1")
   implementation ("io.netty:netty-buffer:$nettyVersion")
   implementation ("io.netty:netty-common:$nettyVersion")
   implementation ("io.netty:netty-handler:$nettyVersion")
