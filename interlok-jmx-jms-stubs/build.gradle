@@ -1,7 +1,7 @@
 ext {
   componentName = "Interlok JMX/Stubs"
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion = "2.22.1"
+  jacksonVersion = "2.22.2"
   activeMqVersion = "5.19.6"
   nettyVersion = "4.2.16.Final"
 }
