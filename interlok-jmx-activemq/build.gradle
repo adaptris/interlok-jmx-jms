@@ -16,7 +16,7 @@ dependencies {
     exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
   }
   testImplementation project(':interlok-jmx-jms-stubs')
-  testRuntimeOnly ("jakarta.jms:jakarta.jms-api:2.0.3")
+  testRuntimeOnly ("jakarta.jms:jakarta.jms-api:3.1.0")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
