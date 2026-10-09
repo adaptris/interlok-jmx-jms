@@ -99,8 +99,10 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-      Spring Framework 5.3.39 is the final 5.3.x release (EOL). Upgrading to Spring 6.x requires
-      significant breaking changes and is outside scope for a 5.0.7 patch release.
+      Spring Framework 5.3.39 is the latest public 5.x release available in Maven Central.
+      Patched 5.3.x releases referenced by the advisories require commercial support.
+      These findings are accepted for this release because no publicly available minor/patch
+      upgrade remediates them, and moving to Spring 6.x is outside the no-major-upgrade constraint.
     ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring-(aop|beans|context|core|expression|jcl|jms|messaging|tx)@5\.3\.39$</packageUrl>
     <cve>CVE-2026-41838</cve>
@@ -120,6 +122,21 @@
     <cve>CVE-2026-41852</cve>
     <cve>CVE-2026-41853</cve>
     <cve>CVE-2026-41855</cve>
+    <cve>CVE-2025-41242</cve>
+    <cve>CVE-2025-41249</cve>
+    <cve>CVE-2026-47884</cve>
+    <cve>CVE-2026-47886</cve>
+    <cve>CVE-2026-47887</cve>
+    <cve>CVE-2026-47888</cve>
+    <cve>CVE-2026-47891</cve>
+    <cve>CVE-2026-47892</cve>
+    <cve>CVE-2026-47893</cve>
+    <cve>CVE-2026-59280</cve>
+    <cve>CVE-2026-59281</cve>
+    <cve>CVE-2026-59282</cve>
+    <cve>CVE-2026-59283</cve>
+    <cve>CVE-2026-59313</cve>
+    <cve>CVE-2026-59314</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -157,5 +174,15 @@
     <cve>CVE-2026-66275</cve>
     <cve>CVE-2026-66276</cve>
     <cve>CVE-2026-66277</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+      Commons Lang 2.6 is the latest 2.x release available in Maven Central. CVE-2025-48924
+      affects ClassUtils.getClass; remediation requires Commons Lang 3.18.0 or newer, a major
+      upgrade with package/API changes. This finding is accepted under the no-major-upgrade
+      constraint. Review when migrating the remaining Commons Lang 2.x usage.
+    ]]></notes>
+    <packageUrl>pkg:maven/commons-lang/commons-lang@2.6</packageUrl>
+    <cve>CVE-2025-48924</cve>
   </suppress>
 </suppressions>
