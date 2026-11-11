@@ -1,43 +1,40 @@
 ext {
   componentName = "Interlok JMX/Stubs"
   componentDesc = "Test scaffolding for JMX Tests; of no use at Interlok runtime"
-  jacksonVersion = "2.22.4"
-  activeMqVersion = "5.19.11"
-  nettyVersion = "4.2.20.Final"
 }
 
 dependencies {
   api project(":interlok-jmx-jms-common")
-  implementation ("org.junit.jupiter:junit-jupiter-engine:5.13.4")
+  implementation ("org.junit.jupiter:junit-jupiter-engine")
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
   // Dependency to platform/BOM
-  implementation (platform("com.fasterxml.jackson:jackson-bom:$jacksonVersion"))
+  implementation (platform("com.fasterxml.jackson:jackson-bom"))
   implementation ("com.fasterxml.jackson.core:jackson-databind")
   implementation ("com.fasterxml.jackson.core:jackson-core")
 
-  implementation ("org.apache.activemq:activemq-broker:$activeMqVersion")
-  implementation ("org.apache.activemq:activemq-jaas:$activeMqVersion")
-  implementation ("org.apache.activemq:activemq-kahadb-store:$activeMqVersion")
-  implementation ("org.apache.activemq:activemq-amqp:$activeMqVersion") {
+  implementation ("org.apache.activemq:activemq-broker")
+  implementation ("org.apache.activemq:activemq-jaas")
+  implementation ("org.apache.activemq:activemq-kahadb-store")
+  implementation ("org.apache.activemq:activemq-amqp") {
     exclude group: "io.netty"
   }
-  implementation ("org.apache.activemq.protobuf:activemq-protobuf:1.1")
-  implementation ("io.netty:netty-buffer:$nettyVersion")
-  implementation ("io.netty:netty-common:$nettyVersion")
-  implementation ("io.netty:netty-handler:$nettyVersion")
-  implementation ("io.netty:netty-transport:$nettyVersion")
-  implementation ("io.netty:netty-transport-native-epoll:$nettyVersion")
-  implementation ("io.netty:netty-transport-native-unix-common:$nettyVersion")
-  implementation ("io.netty:netty-codec:$nettyVersion")
-  implementation ("io.netty:netty-codec-http:$nettyVersion")
-  implementation ("io.netty:netty-codec-base:$nettyVersion")
-  implementation ("io.netty:netty-codec-compression:$nettyVersion")
-  implementation ("io.netty:netty-codec-socks:$nettyVersion")
-  implementation ("io.netty:netty-handler-proxy:$nettyVersion")
-  implementation ("io.netty:netty-resolver:$nettyVersion")
-  implementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
+  implementation ("org.apache.activemq.protobuf:activemq-protobuf")
+  implementation ("io.netty:netty-buffer")
+  implementation ("io.netty:netty-common")
+  implementation ("io.netty:netty-handler")
+  implementation ("io.netty:netty-transport")
+  implementation ("io.netty:netty-transport-native-epoll")
+  implementation ("io.netty:netty-transport-native-unix-common")
+  implementation ("io.netty:netty-codec")
+  implementation ("io.netty:netty-codec-http")
+  implementation ("io.netty:netty-codec-base")
+  implementation ("io.netty:netty-codec-compression")
+  implementation ("io.netty:netty-codec-socks")
+  implementation ("io.netty:netty-handler-proxy")
+  implementation ("io.netty:netty-resolver")
+  implementation ("javax.management.j2ee:javax.management.j2ee-api")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

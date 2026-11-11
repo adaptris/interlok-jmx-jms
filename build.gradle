@@ -8,8 +8,10 @@ plugins {
 }
 
 ext {
-  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: '5.0-SNAPSHOT'
+  interlokCatalogVersion = project.findProperty('interlokCatalogVersion') ?: '5.0-SNAPSHOT'
+  interlokCoreVersion = project.findProperty('interlokCoreVersion') ?: interlokCatalogVersion
   releaseVersion = project.findProperty('releaseVersion') ?: '5.0-SNAPSHOT'
+  interlokCatalogPlatform = "com.adaptris:interlok-version-catalog:${interlokCatalogVersion}"
   nexusBaseUrl = project.findProperty('nexusBaseUrl') ?: 'https://nexus.adaptris.net/nexus'
   mavenPublishUrl = project.findProperty('mavenPublishUrl') ?: nexusBaseUrl + '/content/repositories/snapshots'
   javadocsBaseUrl = nexusBaseUrl + "/content/sites/javadocs/com/adaptris"
@@ -21,9 +23,6 @@ ext {
   offlineJavadocPackageDir = new File(project.buildDir, "offline-javadoc-packages")
 
   organizationName = "Adaptris Ltd"
-  springVersion = '5.3.39'
-  slf4jVersion = '2.0.20'
-  mockitoVersion = '5.2.0'
 }
 
 ext.hostname = { ->
@@ -154,32 +153,42 @@ subprojects { subproject ->
 
   // In this section you declare the dependencies for your production and test code
   dependencies {
-    api ("org.glassfish.external:opendmk_jmxremote_optional_jar:1.0-b01-ea")
-    api ("commons-lang:commons-lang:2.6")
-    api ("org.apache.commons:commons-lang3:3.21.0")
-    api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1")
-    api ("org.springframework:spring-jms:$springVersion")
-    api ("org.springframework:spring-beans:$springVersion") { transitive=false}
-    api ("org.springframework:spring-core:$springVersion") { transitive=false}
-    api ("org.springframework:spring-context:$springVersion") { transitive=false}
-    api ("org.springframework:spring-aop:$springVersion") { transitive=false}
-    api ("com.thoughtworks.xstream:xstream:1.4.21")
-    api ("commons-io:commons-io:2.19.0")
-    implementation ("aopalliance:aopalliance:1.0")
-    implementation ("org.slf4j:slf4j-api:$slf4jVersion")
+    api platform(interlokCatalogPlatform)
+    implementation platform(interlokCatalogPlatform)
+    compileOnly platform(interlokCatalogPlatform)
+    annotationProcessor platform(interlokCatalogPlatform)
+    testImplementation platform(interlokCatalogPlatform)
+    testCompileOnly platform(interlokCatalogPlatform)
+    testRuntimeOnly platform(interlokCatalogPlatform)
+    javadoc platform(interlokCatalogPlatform)
+    umlDoclet platform(interlokCatalogPlatform)
 
-    umlDoclet("nl.talsmasoftware:umldoclet:2.1.0")
-    annotationProcessor ("com.adaptris:interlok-core-apt:$interlokCoreVersion") {changing= true}
+    api ("org.glassfish.external:opendmk_jmxremote_optional_jar")
+    api ("commons-lang:commons-lang")
+    api ("org.apache.commons:commons-lang3")
+    api ("org.apache.geronimo.specs:geronimo-jms_1.1_spec")
+    api ("org.springframework:spring-jms")
+    api ("org.springframework:spring-beans") { transitive=false}
+    api ("org.springframework:spring-core") { transitive=false}
+    api ("org.springframework:spring-context") { transitive=false}
+    api ("org.springframework:spring-aop") { transitive=false}
+    api ("com.thoughtworks.xstream:xstream")
+    api ("commons-io:commons-io")
+    implementation ("aopalliance:aopalliance")
+    implementation ("org.slf4j:slf4j-api")
 
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.13.4")
-    testImplementation ("org.junit.platform:junit-platform-launcher:1.13.3")
-    testImplementation ("org.slf4j:jcl-over-slf4j:$slf4jVersion")
-    testImplementation ("org.slf4j:slf4j-simple:$slf4jVersion")
+    umlDoclet("nl.talsmasoftware:umldoclet")
+    annotationProcessor ("com.adaptris:interlok-core-apt") {changing= true}
 
-    testImplementation ("org.mockito:mockito-core:$mockitoVersion")
-    testImplementation ("org.mockito:mockito-inline:$mockitoVersion")
+    testImplementation ("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation ("org.junit.platform:junit-platform-launcher")
+    testImplementation ("org.slf4j:jcl-over-slf4j")
+    testImplementation ("org.slf4j:slf4j-simple")
 
-    javadoc("com.adaptris:interlok-core-apt:$interlokCoreVersion") { changing= true}
+    testImplementation ("org.mockito:mockito-core")
+    testImplementation ("org.mockito:mockito-inline")
+
+    javadoc("com.adaptris:interlok-core-apt") { changing= true}
   }
 
   javadoc {

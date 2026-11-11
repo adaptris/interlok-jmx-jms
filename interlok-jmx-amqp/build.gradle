@@ -1,32 +1,31 @@
 ext {
   componentName = "Interlok JMX/AMQP"
   componentDesc = "Tunnelling JMX calls using AMQP via Apache QPID"
-  nettyVersion = "4.2.20.Final"
 }
 
 dependencies {
   api project(':interlok-jmx-jms-common')
-  implementation ("org.apache.qpid:qpid-jms-client:1.10.0"){
+  implementation ("org.apache.qpid:qpid-jms-client"){
     // 4.1.43.Final has a HTTP request smuggler vuln, so
     // we exclude netty, and force the fixed version
     // dependabot will sort us out...
     exclude group: "io.netty"
   }
-  implementation ("io.netty:netty-buffer:$nettyVersion")
-  implementation ("io.netty:netty-common:$nettyVersion")
-  implementation ("io.netty:netty-handler:$nettyVersion")
-  implementation ("io.netty:netty-transport:$nettyVersion")
-  implementation ("io.netty:netty-transport-native-epoll:$nettyVersion")
-  implementation ("io.netty:netty-transport-native-unix-common:$nettyVersion")
-  implementation ("io.netty:netty-transport-native-kqueue:$nettyVersion")
-  implementation ("io.netty:netty-codec:$nettyVersion")
-  implementation ("io.netty:netty-codec-http:$nettyVersion")
+  implementation ("io.netty:netty-buffer")
+  implementation ("io.netty:netty-common")
+  implementation ("io.netty:netty-handler")
+  implementation ("io.netty:netty-transport")
+  implementation ("io.netty:netty-transport-native-epoll")
+  implementation ("io.netty:netty-transport-native-unix-common")
+  implementation ("io.netty:netty-transport-native-kqueue")
+  implementation ("io.netty:netty-codec")
+  implementation ("io.netty:netty-codec-http")
 
-  implementation ("org.apache.qpid:proton-jms:0.12.2")
-  implementation ("org.apache.qpid:proton-j:0.34.1")
+  implementation ("org.apache.qpid:proton-jms")
+  implementation ("org.apache.qpid:proton-j")
 
   testImplementation project(':interlok-jmx-jms-stubs')
-  testImplementation ("javax.management.j2ee:javax.management.j2ee-api:1.1.2")
+  testImplementation ("javax.management.j2ee:javax.management.j2ee-api")
 
 }
 
