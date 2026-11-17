@@ -9,8 +9,6 @@ dependencies {
 
   // since we depend on activemq-broker, we have to include jackson because
   // it's transitive
-  // Dependency to platform/BOM
-  implementation (platform("com.fasterxml.jackson:jackson-bom"))
   implementation ("com.fasterxml.jackson.core:jackson-databind")
   implementation ("com.fasterxml.jackson.core:jackson-core")
 
